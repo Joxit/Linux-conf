@@ -1,0 +1,140 @@
+#!/bin/bash
+#    Copyright (C) 2015 Joxit
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+#
+## Usage : plotlines [OPTION] --data dataFile1 [--name data1name] ... --data dataFileN [--name dataNname] > output.png
+##   -t, --title
+##         Produces a plot title that is centered at the top of the plot
+##   -x, --xlabel
+##         Sets the x axis label
+##   -y, --ylabel
+##         Sets the y axis label
+##   -X, --xrange
+##         Sets the horizontal range that will be displayed
+##   -Y, --yrange
+##         Sets the vertical range that will be displayed
+##   -h, --help
+##         Display a help message, and exit.
+##  -v, --version
+##         Display version information, and exit.
+
+TITLE=""
+XLABEL=""
+XRANGE=[*:*]
+YLABEL=" "
+YRANGE=[*:*]
+PLOT="plot"
+PLOTARGS="smooth unique with linespoints ls "
+typeset -i n
+n=1
+
+function usage {
+  sed -n 's/^##//p' "$0" 1>&2
+  exit -1
+}
+
+function checkrange {
+    res=`echo "$1" | egrep -ci "\[-?([0-9]*|\*|([0-9]+\*)*pi(\*[0-9]+)*):-?([0-9]*|\*|([0-9]+\*)*pi(\*[0-9]+)*)\]"` 
+    if [ $res == 0 ]
+    then
+	echo "Warning range $1!" 1>&2
+	echo "Syntax:" 1>&2
+	echo "[{<dummy-var>=}{{<min>}:{<max>}}]" 1>&2
+	echo "[{{<min>}:{<max>}}]" 1>&2
+    fi
+}
+
+if [ $# == 0 ]
+then
+    usage
+fi 
+
+while [ "$1" != "" ]; do
+    case "$1" in
+	-t|--title) 
+	    shift
+	    TITLE="set title '$1'"
+	    ;;
+	-x|--xlabel)
+	    shift
+	    XLABEL="set xlabel '$1'"
+	    ;;
+	-y|--ylabel)
+	    shift
+	    YLABEL="set ylabel '$1'"
+	    ;;
+	-X|--xrange)
+	    shift
+	    checkrange "$1"
+	    XRANGE=$1
+	    ;;
+	-Y|--yrange)
+	    shift
+	    checkrange "$1"
+	    YRANGE=$1
+	    ;;
+	-d|--data)
+	    shift
+	    if [[ ! -f $1 ]] 
+	    then
+		echo "File $1 does not exist!" 1>&2
+		exit -1
+	    fi
+	    if [ $n == 1 ] 
+	    then
+		PLOT="$PLOT '$1' $PLOTARGS $n"
+	    else
+		PLOT="$PLOT, '$1' $PLOTARGS $n"
+	    fi
+	    n=$n+1
+	    ;;
+	-n|--name)
+	    shift
+	    PLOT="$PLOT title '$1'"
+	    ;;
+	-h|--help)
+	    usage
+	    ;;
+	-v|--version)
+	    echo "$0  Copyright (C) 2015 Joxit"
+	    echo "This program comes with ABSOLUTELY NO WARRANTY."
+	    echo "This is free software, and you are welcome to redistribute it"
+	    echo "under certain condition."
+	    ;;
+	*)
+	    echo "$0 : Invalid option"
+	    usage
+	    ;;
+    esac
+    shift
+done
+if [ $n == 1 ] 
+then
+    echo "Error: No input" 1>&2
+    usage
+    exit -1
+fi
+echo $PLOT 1>&2
+gnuplot << EOF
+	set terminal png size 1000,700 enhanced font "Helvetica,20" 
+	$TITLE
+	$XLABEL
+	set xrange $XRANGE
+	$YLABEL
+	set xrange $YRANGE
+	#set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5 
+	#set style line 2 lc rgb '#dd181f' lt 1 lw 2 pt 5 ps 1.5  
+	$PLOT
+EOF
