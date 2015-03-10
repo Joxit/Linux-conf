@@ -1,0 +1,20 @@
+# Packages List
+
+# Programming
+# C programming
+gcc
+g++
+libgtk2.0-dev
+libgtk-3-dev
+# Ocaml programming
+ocaml 
+ledit # 'ledit ocaml'
+
+# emacs
+emacs 
+emacs-goodies-el # Miscellaneous add-ons for Emacs
+tuareg-mode #	emacs-mode for ocaml programs 
+
+# firewall
+iptables
+fail2ban
