@@ -16,3 +16,17 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+ 
+(setq-default tab-width 4)
+
+(setq c-default-style "linux"
+  c-basic-offset 4)
+
+(add-to-list 'load-path "~/.emacs.d/")
+
+(autoload 'markdown-mode "markdown-mode"
+"Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+;;(add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
