@@ -29,4 +29,5 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(setq tuareg-use-smie nil)
 ;;(add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
