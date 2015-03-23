@@ -4,11 +4,8 @@ alias cd.='cd ..'
 
 # Prompt before overwrite
 alias mv='mv -i'
-alias cp='cp -i'
+alias cp='cp -i -p'
 alias ln='ln -i'
-
-# Preserve
-alias cp='cp -p'
 
 # Infos
 alias meminfo='free -m -l -t'
