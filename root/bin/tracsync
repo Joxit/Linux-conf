@@ -1,0 +1,6 @@
+#!/bin/sh
+sudo trac-admin /var/trac/project1 repository sync "*" > project2_out 2>&1
+sudo trac-admin /var/trac/project2 repository sync "*" > project1_out 2>&1
+/etc/init.d/joxitrac restart > trac_restart_out 2>&1
+
+exit 0
