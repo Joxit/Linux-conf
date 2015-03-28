@@ -1,0 +1,76 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          tracd
+# Required-Start:    networking
+# Required-Stop:     networking
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start the tracd standalone Trac web server.
+### END INIT INFO
+# (C) 2008 Guy Rutenberg <http://www.guyrutenberg.com>
+ 
+## Options you should probably change ##
+HOSTNAME=127.0.0.1 # to which hostname should we listen
+# If you only want to serve one project keep this variable
+# empty and set the PROJECT_ENV variable 
+ENV_PARENT_DIR=/var/trac/
+PROJECT_ENV=
+PORT=80
+# add any additional options (such as authentication) here. If you only have one
+# project you should probably add -s here
+ADDITIONAL_OPTS=--basic-auth="projet1,/path/to/.projet1.psw,127.0.0.1/projet1"\ "projet2,/path/to/.projet2.psw,127.0.0.1/projet2"
+ 
+## Options you should probably not change ##
+DAEMON=/usr/bin/tracd
+NAME=joxitrac
+DESC="web server"
+PIDFILE=/var/run/$NAME.pid
+SCRIPTNAME=/etc/init.d/$NAME
+SSD="/sbin/start-stop-daemon"
+ 
+test -x $DAEMON || exit 1
+ 
+set -e
+ 
+. /lib/lsb/init-functions
+ 
+DAEMON_OPTS="--daemonize --pidfile=$PIDFILE --port=$PORT $ADDITIONAL_OPTS"
+if [ -n "$ENV_PARENT_DIR" ]; then
+	DAEMON_OPTS="$DAEMON_OPTS --env-parent-dir=$ENV_PARENT_DIR"
+else
+	DAEMON_OPTS="$DAEMON_OPTS $PROJECT_ENV"
+fi
+ 
+case "$1" in
+  start)
+	log_daemon_msg "Starting $DESC" $NAME
+	if ! $SSD --start --quiet\
+	--pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS ; then
+            log_end_msg 1
+	else
+            log_end_msg 0
+	fi
+    ;;
+  stop)
+	log_daemon_msg "Stopping $DESC" $NAME
+	if $SSD --stop --retry 30\
+	--pidfile $PIDFILE ; then
+	    rm -f $PIDFILE
+	    log_end_msg 0
+	else
+	    log_end_msg 1
+	fi
+	;;
+  restart|force-reload)
+	$0 stop
+	[ -r  $PIDFILE ] && while pidof -x $NAME |\
+		 grep -q `cat $PIDFILE 2>/dev/null` 2>/dev/null ; do sleep 1; done
+	$0 start
+	;;
+  *)
+	echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+ 
+exit 0
