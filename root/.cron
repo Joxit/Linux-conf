@@ -1,2 +1,2 @@
-*/10 * * * * /root/BIN/tracsync
+*/10 * * * * tracsync
 
