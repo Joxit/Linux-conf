@@ -41,18 +41,18 @@ typeset -i n
 n=1
 
 function usage {
-  sed -n 's/^##//p' "$0" 1>&2
-  exit -1
+	sed -n 's/^##//p' "$0" 1>&2
+	exit -1
 }
 
 function checkrange {
     res=`echo "$1" | egrep -ci "\[-?([0-9]*|\*|([0-9]+\*)*pi(\*[0-9]+)*):-?([0-9]*|\*|([0-9]+\*)*pi(\*[0-9]+)*)\]"` 
     if [ $res == 0 ]
     then
-	echo "Warning range $1!" 1>&2
-	echo "Syntax:" 1>&2
-	echo "[{<dummy-var>=}{{<min>}:{<max>}}]" 1>&2
-	echo "[{{<min>}:{<max>}}]" 1>&2
+		echo "Warning range $1!" 1>&2
+		echo "Syntax:" 1>&2
+		echo "[{<dummy-var>=}{{<min>}:{<max>}}]" 1>&2
+		echo "[{{<min>}:{<max>}}]" 1>&2
     fi
 }
 
@@ -63,60 +63,60 @@ fi
 
 while [ "$1" != "" ]; do
     case "$1" in
-	-t|--title) 
-	    shift
-	    TITLE="set title '$1'"
-	    ;;
-	-x|--xlabel)
-	    shift
-	    XLABEL="set xlabel '$1'"
-	    ;;
-	-y|--ylabel)
-	    shift
-	    YLABEL="set ylabel '$1'"
-	    ;;
-	-X|--xrange)
-	    shift
-	    checkrange "$1"
-	    XRANGE=$1
-	    ;;
-	-Y|--yrange)
-	    shift
-	    checkrange "$1"
-	    YRANGE=$1
-	    ;;
-	-d|--data)
-	    shift
-	    if [[ ! -f $1 ]] 
-	    then
-		echo "File $1 does not exist!" 1>&2
-		exit -1
-	    fi
-	    if [ $n == 1 ] 
-	    then
-		PLOT="$PLOT '$1' $PLOTARGS $n"
-	    else
-		PLOT="$PLOT, '$1' $PLOTARGS $n"
-	    fi
-	    n=$n+1
-	    ;;
-	-n|--name)
-	    shift
-	    PLOT="$PLOT title '$1'"
-	    ;;
-	-h|--help)
-	    usage
-	    ;;
-	-v|--version)
-	    echo "$0  Copyright (C) 2015 Joxit"
-	    echo "This program comes with ABSOLUTELY NO WARRANTY."
-	    echo "This is free software, and you are welcome to redistribute it"
-	    echo "under certain condition."
-	    ;;
-	*)
-	    echo "$0 : Invalid option"
-	    usage
-	    ;;
+		-t|--title) 
+			shift
+			TITLE="set title '$1'"
+			;;
+		-x|--xlabel)
+			shift
+			XLABEL="set xlabel '$1'"
+			;;
+		-y|--ylabel)
+			shift
+			YLABEL="set ylabel '$1'"
+			;;
+		-X|--xrange)
+			shift
+			checkrange "$1"
+			XRANGE=$1
+			;;
+		-Y|--yrange)
+			shift
+			checkrange "$1"
+			YRANGE=$1
+			;;
+		-d|--data)
+			shift
+			if [[ ! -f $1 ]] 
+			then
+				echo "File $1 does not exist!" 1>&2
+				exit -1
+			fi
+			if [ $n == 1 ] 
+			then
+				PLOT="$PLOT '$1' $PLOTARGS $n"
+			else
+				PLOT="$PLOT, '$1' $PLOTARGS $n"
+			fi
+			n=$n+1
+			;;
+		-n|--name)
+			shift
+			PLOT="$PLOT title '$1'"
+			;;
+		-h|--help)
+			usage
+			;;
+		-v|--version)
+			echo "$0  Copyright (C) 2015 Joxit"
+			echo "This program comes with ABSOLUTELY NO WARRANTY."
+			echo "This is free software, and you are welcome to redistribute it"
+			echo "under certain condition."
+			;;
+		*)
+			echo "$0 : Invalid option"
+			usage
+			;;
     esac
     shift
 done
