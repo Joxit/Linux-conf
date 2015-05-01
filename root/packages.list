@@ -18,3 +18,6 @@ tuareg-mode #	emacs-mode for ocaml programs
 # firewall
 iptables
 fail2ban
+
+# like top with color and cool effects
+htop
