@@ -2,7 +2,7 @@ git config --global -e
 [alias]
        lol = log --graph --decorate --pretty=oneline --abbrev-commit
        tree = log --graph --decorate --pretty=oneline --abbrev-commit --all
-       branch-merged = "!f(){ for branch in `git branch -r --merged | grep -v HEAD | grep -v origin/master | grep -v origin/release` ; do git show --format=\"%C(yellow)%d %Cgreen%aN %$
+       branch-merged = "!f(){ for branch in `git branch -r --merged | grep -v HEAD | grep -v origin/master | grep -v origin/release` ; do git show --format=\"%C(yellow)%d %Cgreen%aN %C(cyan)%ar\" $branch | head -n 1 ; done }; f"
 
 [color]
        branch = auto
