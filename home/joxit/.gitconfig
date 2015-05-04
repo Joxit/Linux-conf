@@ -1,4 +1,4 @@
-git config --global -e
+# edit this file or `git config --global -e`
 [alias]
        lol = log --graph --decorate --pretty=oneline --abbrev-commit
        tree = log --graph --decorate --pretty=oneline --abbrev-commit --all
