@@ -21,3 +21,6 @@ fail2ban
 
 # like top with color and cool effects
 htop
+
+# Flash plugin for firefox
+browser-plugin-freshplayer-pepperflash
