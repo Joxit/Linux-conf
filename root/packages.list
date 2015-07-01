@@ -19,8 +19,9 @@ tuareg-mode #	emacs-mode for ocaml programs
 iptables
 fail2ban
 
-# like top with color and cool effects
-htop
+# Console monitoring
+htop # like top with color and cool effects
+iotop # show i/o usage
 
 # Flash plugin for firefox
 browser-plugin-freshplayer-pepperflash
