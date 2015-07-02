@@ -22,6 +22,7 @@ fail2ban
 # Console monitoring
 htop # like top with color and cool effects
 iotop # show i/o usage
+iftop # Show network usage
 
 # Flash plugin for firefox
 browser-plugin-freshplayer-pepperflash
