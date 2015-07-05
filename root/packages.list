@@ -26,3 +26,7 @@ iftop # Show network usage
 
 # Flash plugin for firefox
 browser-plugin-freshplayer-pepperflash
+
+# LaTeX
+texlive
+texlive-lang-french
