@@ -30,3 +30,4 @@ browser-plugin-freshplayer-pepperflash
 # LaTeX
 texlive
 texlive-lang-french
+hyphen-fr # French hyphenation patterns
