@@ -31,3 +31,4 @@ browser-plugin-freshplayer-pepperflash
 texlive
 texlive-lang-french
 hyphen-fr # French hyphenation patterns
+myspell-fr # French dictionary for myspell
