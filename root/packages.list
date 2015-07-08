@@ -32,3 +32,6 @@ texlive
 texlive-lang-french
 hyphen-fr # French hyphenation patterns
 myspell-fr # French dictionary for myspell
+
+# Media
+mkvtoolnix-gui # Set of tools to work with Matroska files
