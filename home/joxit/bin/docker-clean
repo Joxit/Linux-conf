@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker rmi $(docker images | grep "<none>" | sed 's/  */ /g' | cut -d' ' -f 3)
+
