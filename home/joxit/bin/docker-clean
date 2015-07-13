@@ -16,28 +16,41 @@
 #
 
 function usage {
-	echo "docker-clean
+    echo "docker-clean [OPTIONS]
     OPTIONS :
         -h, --help
             Display a help message, and exit.
         -v, --version
             Display version information, and exit."
 
-	exit 0
+    exit 0
 }
 
-case "$1" in
-	-h|--help)
-		usage
-		;;
-	-v|--version)
-		echo "$0  Copyright (C) 2015 Joxit"
-		echo "This program comes with ABSOLUTELY NO WARRANTY."
-		echo "This is free software, and you are welcome to redistribute it"
-		echo "under certain condition."
-		exit 0
-		;;
+for arg in "$@"
+do
+case "$arg" in
+    --images|--images=*)
+        opt_option=true
+        IMAGE_NAME="${arg#*=}"
+        if [ "${IMAGE_NAME}" = "" ]; then
+            IMAGE_NAME="<none>"
+        fi
+        ;;
+    -h|--help)
+        usage
+        ;;
+    -v|--version)
+	echo "$0  Copyright (C) 2015 Joxit"
+	echo "This program comes with ABSOLUTELY NO WARRANTY."
+	echo "This is free software, and you are welcome to redistribute it"
+	echo "under certain condition."
+	exit 0
+	;;
 esac
-
-docker rmi $(docker images | grep "<none>" | sed 's/  */ /g' | cut -d' ' -f 3)
+    shift
+done
+if [ "$opt_option" = true ]; then
+    echo "Deleting ${IMAGE_NAME} images (all tags)"
+    docker rmi $(docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3)    
+fi
 
