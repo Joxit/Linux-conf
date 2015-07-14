@@ -36,7 +36,7 @@ case "$arg" in
     --images|--images=*)
         opt_option=true
         IMAGE_NAME="${arg#*=}"
-        if [ "${IMAGE_NAME}" = "" ]; then
+        if [ "${arg}" = "--images" ] || [ "${IMAGE_NAME}" = "" ]; then
             IMAGE_NAME="<none>"
         fi
         ;;
