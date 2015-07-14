@@ -18,6 +18,10 @@
 function usage {
     echo "docker-clean [OPTIONS]
     OPTIONS :
+        --image
+            Delete all images named <none>
+        --image=IMAGE_NAME
+            Delete all images named IMAGE_NAME and their tags (name must match and regex can be used)
         -h, --help
             Display a help message, and exit.
         -v, --version
