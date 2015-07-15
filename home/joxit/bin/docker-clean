@@ -54,7 +54,12 @@ esac
     shift
 done
 if [ "$opt_option" = true ]; then
-    echo "Deleting ${IMAGE_NAME} images (all tags)"
-    docker rmi $(docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3)    
+    IMAGES=`docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3`
+    if [ "${IMAGES}" != "" ]; then
+        echo "Deleting ${IMAGE_NAME} images (all tags)"
+        docker rmi ${IMAGES}    
+    else
+        echo "There are no images to delete"
+    fi
 fi
 
