@@ -40,6 +40,10 @@ case "$arg" in
             IMAGE_NAME="<none>"
         fi
         ;;
+    -f|--force)
+	opt_force=true
+	DOCKER_OPTS="${DOCKER_OPTS} -f"
+	;;
     -h|--help)
         usage
         ;;
@@ -57,7 +61,7 @@ if [ "$opt_option" = true ]; then
     IMAGES=`docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3`
     if [ "${IMAGES}" != "" ]; then
         echo "Deleting ${IMAGE_NAME} images (all tags)"
-        docker rmi ${IMAGES}    
+        docker rmi ${DOCKER_OPTS} ${IMAGES}    
     else
         echo "There are no images to delete"
     fi
