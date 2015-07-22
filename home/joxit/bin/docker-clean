@@ -46,6 +46,9 @@ case "$arg" in
 	opt_force=true
 	DOCKER_OPTS="${DOCKER_OPTS} -f"
 	;;
+    -r|--recursive)
+	opt_recursive=true
+	;;
     -h|--help)
         usage
         ;;
@@ -62,6 +65,19 @@ done
 if [ "$opt_option" = true ]; then
     IMAGES=`docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3`
     if [ "${IMAGES}" != "" ]; then
+	if [ "$opt_recursive" = true ]; then
+	    IMAGES_DISJUNCTION=`echo ${IMAGES} | sed "s/ /|/g"`
+	    echo "${IMAGES_DISJUNCTION}"
+	    while read line; do
+		if [ "`echo $line | cut -d' ' -f 2 | grep -E ${IMAGES_DISJUNCTION}`" != "" ]; then
+		    CONTAINERS="${CONTAINERS} $(echo $line | cut -d' ' -f 1)"    
+		fi
+	    done < <(docker ps -a | sed 's/  */ /g')
+	    if [ "${CONTAINERS}" != "" ]; then
+		echo "Deleting associated containers first"
+		docker rm ${DOCKER_OPTS} ${CONTAINERS}
+	    fi
+	fi
         echo "Deleting ${IMAGE_NAME} images (all tags)"
         docker rmi ${DOCKER_OPTS} ${IMAGES}    
     else
