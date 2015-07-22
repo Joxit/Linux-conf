@@ -24,6 +24,8 @@ function usage {
             Delete all images named IMAGE_NAME and their tags (name must match and regex can be used)
         -f, --force
             Append -f in docker options when possible (`docker rmi -f image`for example)
+        -r, --recursive
+            When deleting image, remove also their containers
         -h, --help
             Display a help message, and exit.
         -v, --version
