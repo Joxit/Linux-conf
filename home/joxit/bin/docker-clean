@@ -69,8 +69,8 @@ if [ "$opt_option" = true ]; then
     if [ "${IMAGES}" != "" ]; then
 	if [ "$opt_recursive" = true ]; then
 	    IMAGES_DISJUNCTION=`echo ${IMAGES} | sed "s/ /|/g"`
-	    echo "${IMAGES_DISJUNCTION}"
 	    while read line; do
+		echo $line
 		if [ "`echo $line | cut -d' ' -f 2 | grep -E ${IMAGES_DISJUNCTION}`" != "" ]; then
 		    CONTAINERS="${CONTAINERS} $(echo $line | cut -d' ' -f 1)"    
 		fi
