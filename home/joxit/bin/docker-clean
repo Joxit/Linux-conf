@@ -36,54 +36,54 @@ function usage {
 
 for arg in "$@"
 do
-case "$arg" in
+  case "$arg" in
     --images|--images=*)
-        opt_option=true
-        IMAGE_NAME="${arg#*=}"
-        if [ "${arg}" = "--images" ] || [ "${IMAGE_NAME}" = "" ]; then
-            IMAGE_NAME="<none>"
-        fi
-        ;;
-    -f|--force)
-  opt_force=true
-  DOCKER_OPTS="${DOCKER_OPTS} -f"
-  ;;
-    -r|--recursive)
-  opt_recursive=true
-  ;;
-    -h|--help)
-        usage
-        ;;
+      opt_option=true
+      IMAGE_NAME="${arg#*=}"
+      if [ "${arg}" = "--images" ] || [ "${IMAGE_NAME}" = "" ]; then
+          IMAGE_NAME="<none>"
+      fi
+      ;;
+  -f|--force)
+      opt_force=true
+      DOCKER_OPTS="${DOCKER_OPTS} -f"
+      ;;
+  -r|--recursive)
+      opt_recursive=true
+      ;;
+  -h|--help)
+      usage
+      ;;
     -v|--version)
-  echo "$0  Copyright (C) 2015 Joxit"
-  echo "This program comes with ABSOLUTELY NO WARRANTY."
-  echo "This is free software, and you are welcome to redistribute it"
-  echo "under certain condition."
-  exit 0
-  ;;
-esac
-    shift
+      echo "$0  Copyright (C) 2015 Joxit"
+      echo "This program comes with ABSOLUTELY NO WARRANTY."
+      echo "This is free software, and you are welcome to redistribute it"
+      echo "under certain condition."
+      exit 0
+     ;;
+  esac
+  shift
 done
 if [ "$opt_option" = true ]; then
-    IMAGES=`docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3`
-    if [ "${IMAGES}" != "" ]; then
-  if [ "$opt_recursive" = true ]; then
+  IMAGES=`docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3`
+  if [ "${IMAGES}" != "" ]; then
+    if [ "$opt_recursive" = true ]; then
       IMAGES_DISJUNCTION=`echo ${IMAGES} | sed "s/ /|/g"`
       while read line; do
-    echo $line
-    if [ "`echo $line | cut -d' ' -f 2 | grep -E ${IMAGES_DISJUNCTION}`" != "" ]; then
-        CONTAINERS="${CONTAINERS} $(echo $line | cut -d' ' -f 1)"    
-    fi
+        echo $line
+        if [ "`echo $line | cut -d' ' -f 2 | grep -E ${IMAGES_DISJUNCTION}`" != "" ]; then
+          CONTAINERS="${CONTAINERS} $(echo $line | cut -d' ' -f 1)"    
+        fi
       done < <(docker ps -a | sed 's/  */ /g')
       if [ "${CONTAINERS}" != "" ]; then
-    echo "Deleting associated containers first"
-    docker rm ${DOCKER_OPTS} ${CONTAINERS}
+        echo "Deleting associated containers first"
+        docker rm ${DOCKER_OPTS} ${CONTAINERS}
       fi
-  fi
-        echo "Deleting ${IMAGE_NAME} images (all tags)"
-        docker rmi ${DOCKER_OPTS} ${IMAGES}    
-    else
-        echo "There are no images to delete"
     fi
+    echo "Deleting ${IMAGE_NAME} images (all tags)"
+    docker rmi ${DOCKER_OPTS} ${IMAGES}    
+  else
+    echo "There are no images to delete"
+  fi
 fi
 
