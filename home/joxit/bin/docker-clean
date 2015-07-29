@@ -65,7 +65,7 @@ do
   shift
 done
 if [ "$opt_option" = true ]; then
-  IMAGES=`docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3`
+  IMAGES=`docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3 | sort | uniq`
   if [ "${IMAGES}" != "" ]; then
     if [ "$opt_recursive" = true ]; then
       IMAGES_DISJUNCTION=`echo ${IMAGES} | sed "s/ /|/g"`
