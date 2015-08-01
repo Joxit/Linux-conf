@@ -1,5 +1,9 @@
 #!/bin/sh
+echo "Updating package list"
 apt-get update
+echo "Upgrade packages"
 apt-get upgrade
+echo "Dist-upgrade packages"
 apt-get dist-upgrade
+echo "Auto remove packages"
 apt-get autoremove --purge
