@@ -1,9 +1,9 @@
-#!/bin/sh
-echo "Updating package list"
+#!/bin/bash
+echo -e "\033[01;34mUpdating package list\033[00m"
 apt-get update
-echo "Upgrade packages"
+echo -e "\033[01;34mUpgrade packages\033[00m"
 apt-get upgrade
-echo "Dist-upgrade packages"
+echo -e "\033[01;34mDist-upgrade packages\033[00m"
 apt-get dist-upgrade
-echo "Auto remove packages"
+echo -e "\033[01;34mAuto remove packages\033[00m"
 apt-get autoremove --purge
