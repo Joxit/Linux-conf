@@ -1,9 +1,13 @@
 #!/bin/bash
+if [ "$1" = "-y" ]; then
+  opt_yes="-y"
+fi
+
 echo -e "\033[01;34mUpdating package list\033[00m"
 apt-get update
 echo -e "\033[01;34mUpgrade packages\033[00m"
-apt-get upgrade
+apt-get upgrade ${opt_yes}
 echo -e "\033[01;34mDist-upgrade packages\033[00m"
-apt-get dist-upgrade
+apt-get dist-upgrade ${opt_yes}
 echo -e "\033[01;34mAuto remove packages\033[00m"
-apt-get autoremove --purge
+apt-get autoremove --purge ${opt_yes}
