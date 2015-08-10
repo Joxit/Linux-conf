@@ -17,3 +17,10 @@ Change the name and email of committers and authors who have the provided name f
 ```sh
 git-change-name [Old_Name] [Correct_Name] [Correct_Email]
 ```
+### git-change-mail
+
+Change the name and email of committers and authors who have the provided mail for a whole git repository project. 
+
+```sh
+git-change-mail [Old_Email] [Correct_Name] [New_Email]
+```
