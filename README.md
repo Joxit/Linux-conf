@@ -32,3 +32,8 @@ Change the message of the specified commit.
 ```sh
 git-change-commit [Commit ID] [Commit Message]"
 ```
+
+## Gedit modules (GTKSourceView)
+
+In usr/share/gtksourceview-3.0/language-specs folder, there are my modules for gedit highlight.
+For now, only docker highlight is available.
