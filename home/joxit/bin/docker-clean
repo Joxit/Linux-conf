@@ -16,7 +16,7 @@
 #
 
 function usage {
-    echo "docker-clean [OPTIONS]
+  echo "docker-clean [OPTIONS]
     OPTIONS :
         --images
             Delete all images named <none> (use docker rmi for <none> images)
@@ -34,24 +34,23 @@ function usage {
     exit 0
 }
 
-for arg in "$@"
-do
+for arg in "$@"; do
   case "$arg" in
     --images|--images=*)
       opt_option=true
       IMAGE_NAME="${arg#*=}"
       if [ "${arg}" = "--images" ] || [ "${IMAGE_NAME}" = "" ]; then
-          IMAGE_NAME="<none>"
+        IMAGE_NAME="<none>"
       fi
       ;;
-  -f|--force)
+    -f|--force)
       opt_force=true
       DOCKER_OPTS="${DOCKER_OPTS} -f"
       ;;
-  -r|--recursive)
+    -r|--recursive)
       opt_recursive=true
       ;;
-  -h|--help)
+    -h|--help)
       usage
       ;;
     -v|--version)
@@ -60,7 +59,7 @@ do
       echo "This is free software, and you are welcome to redistribute it"
       echo "under certain condition."
       exit 0
-     ;;
+      ;;
   esac
   shift
 done
@@ -72,7 +71,7 @@ if [ "$opt_option" = true ]; then
       while read line; do
         echo $line
         if [ "`echo $line | cut -d' ' -f 2 | grep -E ${IMAGES_DISJUNCTION}`" != "" ]; then
-          CONTAINERS="${CONTAINERS} $(echo $line | cut -d' ' -f 1)"    
+          CONTAINERS="${CONTAINERS} $(echo $line | cut -d' ' -f 1)"
         fi
       done < <(docker ps -a | sed 's/  */ /g')
       if [ "${CONTAINERS}" != "" ]; then
@@ -81,7 +80,7 @@ if [ "$opt_option" = true ]; then
       fi
     fi
     echo "Deleting ${IMAGE_NAME} images (all tags)"
-    docker rmi ${DOCKER_OPTS} ${IMAGES}    
+    docker rmi ${DOCKER_OPTS} ${IMAGES}
   else
     echo "There are no images to delete"
   fi
