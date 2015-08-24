@@ -15,6 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -e
 function usage {
   echo "docker-clean [OPTIONS]
     OPTIONS :
@@ -30,17 +31,36 @@ function usage {
             Display a help message, and exit.
         -v, --version
             Display version information, and exit."
-
     exit 0
+}
+
+function get_containers() {
+  if [ "$1" = "" ]; then
+    return 0
+  fi
+  IMAGES_DISJUNCTION=`echo ${1} | sed "s/ /|/g"`
+  while read line; do
+    if [ "`echo $line | cut -d' ' -f 2 | grep -E ${IMAGES_DISJUNCTION}`" != "" ]; then
+      echo "$(echo $line | cut -d' ' -f 1)"
+    fi
+  done < <(docker ps -a | sed 's/  */ /g')
+  return 0
 }
 
 for arg in "$@"; do
   case "$arg" in
     --images|--images=*)
-      opt_option=true
+      opt_images=true
       IMAGE_NAME="${arg#*=}"
       if [ "${arg}" = "--images" ] || [ "${IMAGE_NAME}" = "" ]; then
         IMAGE_NAME="<none>"
+      fi
+      ;;
+    --containers=*)
+      opt_containers=true
+      CONTAINERS_IMAGE_NAME="${arg#*=}"
+      if [ "${CONTAINERS_IMAGE_NAME}" = "" ]; then
+        usage
       fi
       ;;
     -f|--force)
@@ -63,17 +83,11 @@ for arg in "$@"; do
   esac
   shift
 done
-if [ "$opt_option" = true ]; then
+if [ "$opt_images" = true ]; then
   IMAGES=`docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3 | sort | uniq`
   if [ "${IMAGES}" != "" ]; then
     if [ "$opt_recursive" = true ]; then
-      IMAGES_DISJUNCTION=`echo ${IMAGES} | sed "s/ /|/g"`
-      while read line; do
-        echo $line
-        if [ "`echo $line | cut -d' ' -f 2 | grep -E ${IMAGES_DISJUNCTION}`" != "" ]; then
-          CONTAINERS="${CONTAINERS} $(echo $line | cut -d' ' -f 1)"
-        fi
-      done < <(docker ps -a | sed 's/  */ /g')
+      CONTAINERS=`get_containers $IMAGES`
       if [ "${CONTAINERS}" != "" ]; then
         echo "Deleting associated containers first"
         docker rm ${DOCKER_OPTS} ${CONTAINERS}
@@ -85,4 +99,3 @@ if [ "$opt_option" = true ]; then
     echo "There are no images to delete"
   fi
 fi
-
