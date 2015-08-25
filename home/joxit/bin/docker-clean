@@ -98,4 +98,9 @@ if [ "$opt_images" = true ]; then
   else
     echo "There are no images to delete"
   fi
+elif [ "$opt_containers" = true ]; then
+  CONTAINERS=`get_containers $CONTAINERS_IMAGE_NAME`
+  if [ "$CONTAINERS" != "" ]; then
+    docker rm ${DOCKER_OPTS} ${CONTAINERS}
+  fi
 fi
