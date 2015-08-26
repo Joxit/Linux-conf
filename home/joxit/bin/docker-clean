@@ -38,7 +38,7 @@ function get_containers() {
   if [ "$1" = "" ]; then
     return 0
   fi
-  IMAGES_DISJUNCTION=`echo ${1} | sed "s/ /|/g"`
+  IMAGES_DISJUNCTION=`echo ${@} | sed "s/ /|/g"`
   while read line; do
     if [ "`echo $line | cut -d' ' -f 2 | grep -E ${IMAGES_DISJUNCTION}`" != "" ]; then
       echo "$(echo $line | cut -d' ' -f 1)"
@@ -99,6 +99,7 @@ if [ "$opt_images" = true ]; then
     echo "There are no images to delete"
   fi
 elif [ "$opt_containers" = true ]; then
+  echo "Deleting containers of $CONTAINERS_IMAGE_NAME"
   CONTAINERS=`get_containers $CONTAINERS_IMAGE_NAME`
   if [ "$CONTAINERS" != "" ]; then
     docker rm ${DOCKER_OPTS} ${CONTAINERS}
