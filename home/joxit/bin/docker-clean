@@ -23,6 +23,8 @@ function usage {
             Delete all images named <none> (use docker rmi for <none> images)
         --images=IMAGE_NAME
             Delete all images named IMAGE_NAME and their tags (name must match and regex can be used)
+        --containers=IMAGES_NAMES
+            Delete all containers for a list of images
         -f, --force
             Append -f in docker options when possible (`docker rmi -f image`for example)
         -r, --recursive
