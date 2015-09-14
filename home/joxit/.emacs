@@ -10,6 +10,7 @@
  '(custom-enabled-themes (quote (tango-dark)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
+ '(global-whitespace-mode t)
  '(size-indication-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
