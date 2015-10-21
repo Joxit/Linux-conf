@@ -12,7 +12,7 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ## Usage : plotlines [OPTION] --data dataFile1 [--name data1name] ... --data dataFileN [--name dataNname] > output.png
 ##   -t, --title
@@ -59,11 +59,11 @@ function checkrange {
 if [ $# == 0 ]
 then
 	usage
-fi 
+fi
 
 while [ "$1" != "" ]; do
 	case "$1" in
-		-t|--title) 
+		-t|--title)
 			shift
 			TITLE="set title '$1'"
 			;;
@@ -87,12 +87,12 @@ while [ "$1" != "" ]; do
 			;;
 		-d|--data)
 			shift
-			if [[ ! -f $1 ]] 
+			if [[ ! -f $1 ]]
 			then
 				echo "File $1 does not exist!" 1>&2
 				exit -1
 			fi
-			if [ $n == 1 ] 
+			if [ $n == 1 ]
 			then
 				PLOT="$PLOT '$1' $PLOTARGS $n"
 			else
@@ -120,7 +120,7 @@ while [ "$1" != "" ]; do
 	esac
 	shift
 done
-if [ $n == 1 ] 
+if [ $n == 1 ]
 then
 	echo "Error: No input" 1>&2
 	usage
@@ -128,13 +128,13 @@ then
 fi
 echo $PLOT 1>&2
 gnuplot << EOF
-	set terminal png size 1000,700 enhanced font "Helvetica,20" 
+	set terminal png size 1000,700 enhanced font "Helvetica,20"
 	$TITLE
 	$XLABEL
 	set xrange $XRANGE
 	$YLABEL
 	set xrange $YRANGE
-	#set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5 
-	#set style line 2 lc rgb '#dd181f' lt 1 lw 2 pt 5 ps 1.5  
+	#set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5
+	#set style line 2 lc rgb '#dd181f' lt 1 lw 2 pt 5 ps 1.5
 	$PLOT
 EOF
