@@ -56,8 +56,7 @@ function checkrange {
 	fi
 }
 
-if [ $# == 0 ]
-then
+if [ $# == 0 ]; then
 	usage
 fi
 
@@ -87,13 +86,11 @@ while [ "$1" != "" ]; do
 			;;
 		-d|--data)
 			shift
-			if [[ ! -f $1 ]]
-			then
+			if [[ ! -f $1 ]]; then
 				echo "File $1 does not exist!" 1>&2
 				exit -1
 			fi
-			if [ $n == 1 ]
-			then
+			if [ $n == 1 ]; then
 				PLOT="$PLOT '$1' $PLOTARGS $n"
 			else
 				PLOT="$PLOT, '$1' $PLOTARGS $n"
@@ -120,8 +117,7 @@ while [ "$1" != "" ]; do
 	esac
 	shift
 done
-if [ $n == 1 ]
-then
+if [ $n == 1 ]; then
 	echo "Error: No input" 1>&2
 	usage
 	exit -1
