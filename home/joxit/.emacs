@@ -9,6 +9,8 @@
  '(cua-mode t nil (cua-base))
  '(custom-enabled-themes (quote (tango-dark)))
  '(show-paren-mode t)
+ '(sh-indentation 2)
+ '(sh-basic-offset 2)
  '(show-trailing-whitespace t)
  '(global-whitespace-mode t)
  '(size-indication-mode t))
@@ -20,7 +22,7 @@
  '(whitespace-indentation ((t nil))))
  
 (setq-default tab-width 4)
-
+(add-hook 'sh-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (setq c-default-style "linux"
   c-basic-offset 4)
 
