@@ -33,7 +33,7 @@ function usage {
             Display a help message, and exit.
         -v, --version
             Display version information, and exit."
-    exit 0
+  exit 0
 }
 
 function get_containers() {
