@@ -12,11 +12,11 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
 function usage {
-	echo "split-file [OPTIONS] [SLICE FILE] [INPUT [PREFIX]]
+  echo "split-file [OPTIONS] [SLICE FILE] [INPUT [PREFIX]]
     SLICE FILE :
         Ranges of parts. Each line of the file start the slice.
     INPUT :
@@ -29,36 +29,36 @@ function usage {
         -v, --version
             Display version information, and exit."
 
-	exit 0
+  exit 0
 }
 
 case "$1" in
-	-h|--help)
-		usage
-		;;
-	-v|--version)
-		echo "$0  Copyright (C) 2015 Joxit"
-		echo "This program comes with ABSOLUTELY NO WARRANTY."
-		echo "This is free software, and you are welcome to redistribute it"
-		echo "under certain condition."
-		exit 0
-		;;
+  -h|--help)
+    usage
+    ;;
+  -v|--version)
+    echo "$0  Copyright (C) 2015 Joxit"
+    echo "This program comes with ABSOLUTELY NO WARRANTY."
+    echo "This is free software, and you are welcome to redistribute it"
+    echo "under certain condition."
+    exit 0
+    ;;
 esac
 
 if [ "$2" == "" ]
 then
-    usage
+  usage
 fi
 
 if [[ ! -f $1 ]]
 then
-	echo "File $1 does not exist!" 1>&2
-	exit -1
+  echo "File $1 does not exist!" 1>&2
+  exit -1
 fi
 if [[ ! -f $2 ]]
 then
-	echo "File $2 does not exist!" 1>&2
-	exit -1
+  echo "File $2 does not exist!" 1>&2
+  exit -1
 fi
 
 SLICE="$1"
@@ -67,29 +67,29 @@ PREFIX="$2"
 
 if [ "$3" != "" ]
 then
-	PREFIX="$3"
+  PREFIX="$3"
 fi
 
-slice_len=`sed -n '$=' $SLICE` 
+slice_len=`sed -n '$=' $SLICE`
 n_digits=${#slice_len}
 part="1"
 current=1
 input_len=`sed -n '$=' $INPUT`
 
-while read line 
+while read line
 do
-	if [ "$line" != "1" ] && [ "$line" != "" ]
-	then
-		name=`printf "${PREFIX}.part%.${n_digits}d" $part` 
-		awk "NR >= $current && NR < $line" $INPUT  > $name  
-		part=`echo "$part+1" | bc`
-		echo "$current -- $line > $name"
-		current="$line"
-	fi
+  if [ "$line" != "1" ] && [ "$line" != "" ]
+  then
+    name=`printf "${PREFIX}.part%.${n_digits}d" $part`
+    awk "NR >= $current && NR < $line" $INPUT  > $name
+    part=`echo "$part+1" | bc`
+    echo "$current -- $line > $name"
+    current="$line"
+  fi
 done < $1
 
 # Last iteration
-name=`printf "${PREFIX}.part%.${n_digits}d" $part` 
+name=`printf "${PREFIX}.part%.${n_digits}d" $part`
 awk "NR >= $current" $INPUT > $name
 echo "$current -- EOF > $name"
 part=`echo "$part+1" | bc`
