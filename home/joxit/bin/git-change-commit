@@ -1,18 +1,17 @@
-#/bin/sh
+#!/bin/sh
 
 if [ "$#" -ne 2 ]; then
-    echo "Illegal number of parameters"
-	echo "usage : $0 [Commit ID] [Commit Message]"
-	exit 0
+  echo "Illegal number of parameters"
+  echo "usage : $0 [Commit ID] [Commit Message]"
+  exit 0
 fi
 
 COMMIT_ID=$1
 COMMIT_MSG=$2
 
 git filter-branch -f --msg-filter '
-if [ "$GIT_COMMIT" = "$COMMIT_ID" ]
-then 
-	 echo "$COMMIT_MSG"
-else 
-	 cat
+if [ "$GIT_COMMIT" = "$COMMIT_ID" ]; then
+  echo "$COMMIT_MSG"
+else
+  cat
 fi'
