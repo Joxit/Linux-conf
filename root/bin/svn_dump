@@ -3,30 +3,26 @@
 OUT="."
 
 case "$1" in
-    -*|-h|--help)
-	echo "usage : $0 [Output directory]"
-	exit 0
-	;;
-    *)
-	if [ "$1" != "" ]
-	then 
-	    if [ -d $1 ]
-	    then
-		OUT=$1
-	    else
-		echo "Wrong directory"
-		exit 0
-	    fi
-	fi
-	;;
+  -*|-h|--help)
+    echo "usage : $0 [Output directory]"
+    exit 0
+    ;;
+  *)
+    if [ "$1" != "" ]; then
+      if [ -d $1 ]; then
+        OUT=$1
+      else
+        echo "Wrong directory"
+        exit 0
+      fi
+    fi
+    ;;
 esac
 
-for file in /var/svn/*
-do
-	if [ -d $file ]
-	then
-		name=`echo "$file" | grep -o [^\/]*$`
-		echo "Backup of $name"
-		svnadmin dump -q $file > $OUT/$name-`date --rfc-3339=date`.svndump
-	fi
+for file in /var/svn/*; do
+  if [ -d $file ]; then
+    name=`echo "$file" | grep -o [^\/]*$`
+    echo "Backup of $name"
+    svnadmin dump -q $file > $OUT/$name-`date --rfc-3339=date`.svndump
+  fi
 done
