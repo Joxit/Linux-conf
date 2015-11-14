@@ -26,7 +26,7 @@ function usage {
         --containers=IMAGES_NAMES
             Delete all containers for a list of images
         -f, --force
-            Append -f in docker options when possible (`docker rmi -f image`for example)
+            Append -f in docker options when possible ('docker rmi -f image' for example)
         -r, --recursive
             When deleting image, remove also their containers
         -h, --help
