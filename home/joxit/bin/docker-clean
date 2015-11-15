@@ -41,11 +41,11 @@ function get_containers() {
     return 0
   fi
   IMAGES_DISJUNCTION=`echo ${@} | sed "s/ /|/g"`
-  while read line; do
+  echo "$(docker ps -a | sed 's/  */ /g')" | while read line; do
     if [ "`echo $line | cut -d' ' -f 2 | grep -E ${IMAGES_DISJUNCTION}`" != "" ]; then
       echo "$(echo $line | cut -d' ' -f 1)"
     fi
-  done < <(docker ps -a | sed 's/  */ /g')
+  done
   return 0
 }
 
