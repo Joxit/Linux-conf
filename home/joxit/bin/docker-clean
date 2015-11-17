@@ -22,11 +22,13 @@ function usage {
         --images
             Delete all images named <none> (use docker rmi for <none> images)
         --images=IMAGE_NAME
-            Delete all images named IMAGE_NAME and their tags (name must match and regex can be used)
+            Delete all images named IMAGE_NAME and their tags (name must match \
+and regex can be used)
         --containers=IMAGES_NAMES
             Delete all containers for a list of images
         -f, --force
-            Append -f in docker options when possible ('docker rmi -f image' for example)
+            Append -f in docker options when possible ('docker rmi -f image' \
+for example)
         -r, --recursive
             When deleting image, remove also their containers
         -h, --help
@@ -41,8 +43,11 @@ function get_containers() {
     return 0
   fi
   IMAGES_DISJUNCTION=`echo ${@} | sed "s/ /|/g"`
-  echo "$(docker ps -a | sed 's/  */ /g')" | while read line; do
-    if [ "`echo $line | cut -d' ' -f 2 | grep -E ${IMAGES_DISJUNCTION}`" != "" ]; then
+  echo "$(docker ps -a | sed 's/  */ /g')" \
+    | while read line; do
+        if [ $(echo $line \
+                  | cut -d' ' -f 2 \
+                  | grep -E ${IMAGES_DISJUNCTION}) ]; then
       echo "$(echo $line | cut -d' ' -f 1)"
     fi
   done
@@ -86,7 +91,12 @@ for arg in "$@"; do
   shift
 done
 if [ "$opt_images" = true ]; then
-  IMAGES=`docker images | grep "^$IMAGE_NAME " | sed 's/  */ /g' | cut -d' ' -f 3 | sort | uniq`
+  IMAGES=$(docker images \
+              | grep "^$IMAGE_NAME " \
+              | sed 's/  */ /g' \
+              | cut -d' ' -f 3 \
+              | sort \
+              | uniq)
   if [ "${IMAGES}" != "" ]; then
     if [ "$opt_recursive" = true ]; then
       CONTAINERS=`get_containers $IMAGES`
