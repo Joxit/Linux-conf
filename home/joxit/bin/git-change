@@ -15,6 +15,25 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -e
+function usage {
+  echo "git-change [OPTIONS]
+    OPTIONS :
+        --old-name=OLD_NAME
+            Filter all commits where committer or author have this name
+        --old-email=OLD_EMAIL
+            Filter all commits where commiter or author have this email
+        --name=CORRECT_NAME
+            Set the new name for all commits filtered
+        --email=CORRECT_EMAIL
+            Set the new email for all commits filtered
+        -h, --help
+            Display a help message, and exit.
+        -v, --version
+            Display version information, and exit."
+  exit 0
+}
+
 for arg in "$@"; do
   case "$arg" in
     --old-name=*)
@@ -28,6 +47,9 @@ for arg in "$@"; do
       ;;
     --email=*)
       CORRECT_EMAIL="${arg#*=}"
+      ;;
+    -h|--help)
+      usage
       ;;
     -v|--version)
       echo "$0  Copyright (C) 2015 Joxit"
