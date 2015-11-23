@@ -62,6 +62,10 @@ for arg in "$@"; do
   shift
 done
 
+if [ ! $OLD_NAME ] && [ ! $OLD_EMAIL ]; then
+  usage
+fi
+
 git filter-branch -f --env-filter '
 if [ "$GIT_COMMITTER_NAME" = "$OLD_NAME" ] \
      || [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL" ]; then
