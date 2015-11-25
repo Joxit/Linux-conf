@@ -115,6 +115,8 @@ elif [ "$opt_containers" = true ]; then
   CONTAINERS=`get_containers $CONTAINERS_IMAGE_NAME`
   if [ "$CONTAINERS" != "" ]; then
     docker rm ${DOCKER_OPTS} ${CONTAINERS}
+  else
+    echo "There are no containers to delete"
   fi
 else
   usage
