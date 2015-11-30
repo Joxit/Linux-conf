@@ -36,14 +36,30 @@ function usage {
 
 for arg in "$@"; do
   case "$arg" in
+    --old-name)
+      shift
+      OLD_NAME="${arg}"
+    ;;
     --old-name=*)
       OLD_NAME="${arg#*=}"
+      ;;
+    --old-email)
+      shift
+      OLD_EMAIL="${arg}"
       ;;
     --old-email=*)
       OLD_EMAIL="${arg#*=}"
       ;;
+    --name)
+      shift
+      CORRECT_NAME="${arg}"
+      ;;
     --name=*)
       CORRECT_NAME="${arg#*=}"
+      ;;
+    --email)
+      shift
+      CORRECT_EMAIL="${arg}"
       ;;
     --email=*)
       CORRECT_EMAIL="${arg#*=}"
