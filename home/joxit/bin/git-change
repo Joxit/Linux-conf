@@ -19,13 +19,13 @@ set -e
 function usage {
   echo "git-change [OPTIONS]
     OPTIONS :
-        --old-name=OLD_NAME
+        --old-name=OLD_NAME       | --old-name OLD_NAME
             Filter all commits where committer or author have this name
-        --old-email=OLD_EMAIL
+        --old-email=OLD_EMAIL     | --old-email OLD_EMAIL
             Filter all commits where commiter or author have this email
-        --name=CORRECT_NAME
+        --name=CORRECT_NAME       | --name CORRECT_NAME
             Set the new name for all commits filtered
-        --email=CORRECT_EMAIL
+        --email=CORRECT_EMAIL     | --email CORRECT_EMAIL
             Set the new email for all commits filtered
         -h, --help
             Display a help message, and exit.
