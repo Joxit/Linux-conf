@@ -20,7 +20,11 @@ qgit # Qt git gui
 ### emacs
 emacs
 emacs-goodies-el # Miscellaneous add-ons for Emacs
-tuareg-mode #	emacs-mode for ocaml programs
+tuareg-mode # emacs-mode for ocaml programs
+
+## SSH
+ssh
+ssh-askpass-gnome # use ssh-add on your private key
 
 ## Firewall
 iptables
