@@ -20,8 +20,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(whitespace-indentation ((t nil))))
- 
+
 (setq-default tab-width 4)
+(add-hook 'tuareg-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (add-hook 'sh-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (setq c-default-style "linux"
   c-basic-offset 4)
