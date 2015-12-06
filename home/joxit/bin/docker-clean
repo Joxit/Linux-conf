@@ -60,7 +60,12 @@ for arg in "$@"; do
       opt_images=true
       COMPLET_IMAGE_NAME="${arg#*=}"
       IMAGE_NAME="${COMPLET_IMAGE_NAME%%:*}"
-      IMAGE_TAG="${COMPLET_IMAGE_NAME#*:}"
+      # Check if COMPLET_IMAGE_NAME contains :
+      if [ ${COMPLET_IMAGE_NAME##*:*} ]; then
+        IMAGE_TAG="*"
+      else
+        IMAGE_TAG="${COMPLET_IMAGE_NAME#*:}"
+      fi
       if [ "${arg}" = "--images" ] || [ "${IMAGE_NAME}" = "" ]; then
         IMAGE_NAME="<none>"
         none=true
@@ -96,15 +101,15 @@ done
 if [ "$opt_images" = true ]; then
   if [ $none ]; then
     IMAGES=$(docker images \
-              | grep "^$IMAGE_NAME " \
               | sed 's/  */ /g' \
+              | grep "^$IMAGE_NAME " \
               | cut -d' ' -f 3 \
               | sort \
               | uniq)
   else
     IMAGES=$(docker images \
-              | grep "^$IMAGE_NAME " \
               | sed 's/  */ /g' \
+              | grep "^$IMAGE_NAME $IMAGE_TAG " \
               | cut -d' ' -f 1-2 --output-delimiter=':' \
               | sort \
               | uniq)
