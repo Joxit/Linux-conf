@@ -58,9 +58,12 @@ for arg in "$@"; do
   case "$arg" in
     --images|--images=*)
       opt_images=true
-      IMAGE_NAME="${arg#*=}"
+      COMPLET_IMAGE_NAME="${arg#*=}"
+      IMAGE_NAME="${COMPLET_IMAGE_NAME%%:*}"
+      IMAGE_TAG="${COMPLET_IMAGE_NAME#*:}"
       if [ "${arg}" = "--images" ] || [ "${IMAGE_NAME}" = "" ]; then
         IMAGE_NAME="<none>"
+        none=true
       fi
       ;;
     --containers=*)
@@ -91,12 +94,21 @@ for arg in "$@"; do
   shift
 done
 if [ "$opt_images" = true ]; then
-  IMAGES=$(docker images \
+  if [ $none ]; then
+    IMAGES=$(docker images \
               | grep "^$IMAGE_NAME " \
               | sed 's/  */ /g' \
               | cut -d' ' -f 3 \
               | sort \
               | uniq)
+  else
+    IMAGES=$(docker images \
+              | grep "^$IMAGE_NAME " \
+              | sed 's/  */ /g' \
+              | cut -d' ' -f 1-2 --output-delimiter=':' \
+              | sort \
+              | uniq)
+  fi
   if [ "${IMAGES}" != "" ]; then
     if [ "$opt_recursive" = true ]; then
       CONTAINERS=`get_containers $IMAGES`
