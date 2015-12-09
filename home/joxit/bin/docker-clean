@@ -78,6 +78,13 @@ for arg in "$@"; do
         usage
       fi
       ;;
+    --repository=*)
+      opt_repository=true
+      REPOSITORY_NAME="${arg#*=}"
+      if [ "${REPOSITORY_NAME}" = "" ]; then
+        usage
+      fi
+      ;;
     -f|--force)
       opt_force=true
       DOCKER_OPTS="${DOCKER_OPTS} -f"
@@ -135,6 +142,15 @@ elif [ $opt_containers ]; then
   else
     echo "There are no containers to delete"
   fi
+elif [ $opt_repository ]; then
+  echo "Deleting all images from $REPOSITORY_NAME"
+   IMAGES=$(docker images \
+                | sed 's/  */ /g' \
+                | grep "^$REPOSITORY_NAME\/[^ ]* " \
+                | cut -d' ' -f 1-2 --output-delimiter=':' \
+                | sort \
+                | uniq)
+   docker rmi ${IMAGES}
 else
   usage
 fi
