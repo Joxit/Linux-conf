@@ -19,13 +19,15 @@ set -e
 function usage {
   echo "docker-clean [OPTIONS]
     OPTIONS :
-        --images
+        --images [-f] [-r]
             Delete all images named <none> (use docker rmi for <none> images)
-        --images=IMAGE_NAME:IMAGE_TAG
+        --images=IMAGE_NAME:IMAGE_TAG [-f] [-r]
             Delete all images named IMAGE_NAME and their tags or only an image \
 with its tag (name and tag must match and regex can be used)
-        --containers=IMAGES_NAMES
+        --containers=IMAGES_NAMES [-f]
             Delete all containers for a list of images
+        --repository=REPOSITORY_NAMES [-f]
+            Delete all images from a repository
         -f, --force
             Append -f in docker options when possible ('docker rmi -f image' \
 for example)
@@ -144,13 +146,11 @@ elif [ $opt_containers ]; then
   fi
 elif [ $opt_repository ]; then
   echo "Deleting all images from $REPOSITORY_NAME"
-   IMAGES=$(docker images \
-                | sed 's/  */ /g' \
-                | grep "^$REPOSITORY_NAME\/[^ ]* " \
-                | cut -d' ' -f 1-2 --output-delimiter=':' \
-                | sort \
-                | uniq)
-   docker rmi ${IMAGES}
+  IMAGES=$(docker images \
+              | sed 's/  */ /g' \
+              | grep "^$REPOSITORY_NAME\/[^ ]* " \
+              | cut -d' ' -f 1-2 --output-delimiter=':')
+  docker rmi ${DOCKER_OPTS} ${IMAGES}
 else
   usage
 fi
