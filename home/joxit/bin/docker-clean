@@ -63,12 +63,12 @@ for arg in "$@"; do
       COMPLET_IMAGE_NAME="${arg#*=}"
       IMAGE_NAME="${COMPLET_IMAGE_NAME%%:*}"
       # Check if COMPLET_IMAGE_NAME contains :
-      if [ ${COMPLET_IMAGE_NAME##*:*} ]; then
+      if [ "${COMPLET_IMAGE_NAME##*:*}" ]; then
         IMAGE_TAG="*"
       else
         IMAGE_TAG="${COMPLET_IMAGE_NAME#*:}"
       fi
-      if [ "${arg}" = "--images" ] || [ "${IMAGE_NAME}" = "" ]; then
+      if [ "${arg}" = "--images" ] || [ -z "${IMAGE_NAME}" ]; then
         IMAGE_NAME="<none>"
         none=true
       fi
@@ -76,14 +76,14 @@ for arg in "$@"; do
     --containers=*)
       opt_containers=true
       CONTAINERS_IMAGE_NAME="${arg#*=}"
-      if [ "${CONTAINERS_IMAGE_NAME}" = "" ]; then
+      if [ -z "${CONTAINERS_IMAGE_NAME}" ]; then
         usage
       fi
       ;;
     --repository=*)
       opt_repository=true
       REPOSITORY_NAME="${arg#*=}"
-      if [ "${REPOSITORY_NAME}" = "" ]; then
+      if [ -z "${REPOSITORY_NAME}" ]; then
         usage
       fi
       ;;
@@ -123,10 +123,10 @@ if [ $opt_images ]; then
                 | sort \
                 | uniq)
   fi
-  if [ ${IMAGES} ]; then
+  if [ "${IMAGES}" ]; then
     if [ $opt_recursive ]; then
       CONTAINERS=`get_containers $IMAGES`
-      if [ ${CONTAINERS} ]; then
+      if [ "${CONTAINERS}" ]; then
         echo "Deleting associated containers first"
         docker rm ${DOCKER_OPTS} ${CONTAINERS}
       fi
@@ -139,18 +139,22 @@ if [ $opt_images ]; then
 elif [ $opt_containers ]; then
   echo "Deleting containers of $CONTAINERS_IMAGE_NAME"
   CONTAINERS=`get_containers $CONTAINERS_IMAGE_NAME`
-  if [ $CONTAINERS ]; then
+  if [ "$CONTAINERS" ]; then
     docker rm ${DOCKER_OPTS} ${CONTAINERS}
   else
     echo "There are no containers to delete"
   fi
 elif [ $opt_repository ]; then
-  echo "Deleting all images from $REPOSITORY_NAME"
   IMAGES=$(docker images \
               | sed 's/  */ /g' \
               | grep "^$REPOSITORY_NAME\/[^ ]* " \
               | cut -d' ' -f 1-2 --output-delimiter=':')
-  docker rmi ${DOCKER_OPTS} ${IMAGES}
+  if [ "${IMAGES}" ]; then
+    echo "Deleting all images from $REPOSITORY_NAME"
+    docker rmi ${DOCKER_OPTS} ${IMAGES}
+  else
+    echo "There are no images to delete"
+  fi
 else
   usage
 fi
