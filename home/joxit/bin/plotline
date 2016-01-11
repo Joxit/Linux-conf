@@ -123,13 +123,13 @@ if [ $n == 1 ]; then
 fi
 echo $PLOT 1>&2
 gnuplot << EOF
-	set terminal png size 1000,700 enhanced font "Helvetica,20"
-	$TITLE
-	$XLABEL
-	set xrange $XRANGE
-	$YLABEL
-	set xrange $YRANGE
-	#set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5
-	#set style line 2 lc rgb '#dd181f' lt 1 lw 2 pt 5 ps 1.5
-	$PLOT
+  set terminal png size 1000,700 enhanced font "Helvetica,20"
+  $TITLE
+  $XLABEL
+  set xrange $XRANGE
+  $YLABEL
+  set xrange $YRANGE
+  #set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5
+  #set style line 2 lc rgb '#dd181f' lt 1 lw 2 pt 5 ps 1.5
+  $PLOT
 EOF
