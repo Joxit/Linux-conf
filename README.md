@@ -45,4 +45,4 @@ git-change [--old-name=OLD_NAME] [--old-email=OLD_EMAIL] \
 ## Gedit modules (GTKSourceView)
 
 In usr/share/gtksourceview-3.0/language-specs folder, there are my modules for gedit highlight.
-For now, only docker highlight is available.
+For now, only **Dockerfile** and **CartoCSS** highlight are available.
