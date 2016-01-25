@@ -31,6 +31,7 @@
   <styles>
     <style id="comment" _name="Comments" map-to="def:comment"/>
     <style id="string" _name="Strings" map-to="def:string"/>
+    <style id="color" _name="Color" map-to="def:base-n-integer"/>
     <style id="keyword" _name="Keywords" map-to="def:keyword"/>
     <style id="selector" _name="Selectors" map-to="def:statement"/>
     <style id="attachment" _name="Attachments" map-to="def:identifier"/>
@@ -224,6 +225,27 @@
       <match>@[a-zA-Z][a-zA-Z0-9_-]*\b</match>
     </context>
 
+    <context id="hex" style-ref="color">
+      <match>#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\b</match>
+    </context>
+
+    <context id="assignment">
+      <start>^@[a-zA-Z][a-zA-Z0-9_-]*\s*:</start>
+      <end>;</end>
+      <include>
+        <context sub-pattern="0" where="start" style-ref="variable"/>
+        <context ref="def:string"/>
+        <context ref="def:single-quoted-string"/>
+        <context ref="def:line-continue"/>
+        <context ref="def:decimal"/>
+        <context ref="def:float"/>
+        <context ref="function"/>
+        <context ref="variable"/>
+        <context ref="boolean"/>
+        <context ref="hex"/>
+      </include>
+    </context>
+
     <context id="boolean" style-ref="boolean">
       <keyword>true</keyword>
       <keyword>false</keyword>
@@ -243,6 +265,7 @@
         <context ref="function"/>
         <context ref="variable"/>
         <context ref="boolean"/>
+        <context ref="hex"/>
       </include>
     </context>
 
@@ -255,6 +278,7 @@
         <context ref="def:c-like-close-comment-outside-comment"/>
         <context ref="def:decimal"/>
         <context ref="def:float"/>
+        <context ref="assignment"/>
         <context ref="property"/>
         <context ref="selector"/>
         <context ref="attachment"/>
