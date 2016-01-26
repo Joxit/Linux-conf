@@ -42,175 +42,41 @@
 
   <definitions>
 
-    <context id="property" style-ref="keyword">
-      <suffix>(\s*:)</suffix>
-      <keyword>image-filters</keyword>
-      <keyword>direct-image-filters</keyword>
-      <keyword>comp-op</keyword>
-      <keyword>opacity</keyword>
-      <keyword>background-color</keyword>
-      <keyword>background-image</keyword>
-      <keyword>background-image-comp-op</keyword>
-      <keyword>background-image-opacity</keyword>
-      <keyword>srs</keyword>
-      <keyword>buffer-size</keyword>
-      <keyword>base</keyword>
-      <keyword>font-directory</keyword>
-      <keyword>polygon-fill</keyword>
-      <keyword>polygon-opacity</keyword>
-      <keyword>polygon-gamma</keyword>
-      <keyword>polygon-gamma-method</keyword>
-      <keyword>polygon-clip</keyword>
-      <keyword>polygon-simplify</keyword>
-      <keyword>polygon-simplify-algorithm</keyword>
-      <keyword>polygon-smooth</keyword>
-      <keyword>polygon-geometry-transform</keyword>
-      <keyword>polygon-comp-op</keyword>
-      <keyword>line-color</keyword>
-      <keyword>line-width</keyword>
-      <keyword>line-opacity</keyword>
-      <keyword>line-join</keyword>
-      <keyword>line-cap</keyword>
-      <keyword>line-gamma</keyword>
-      <keyword>line-gamma-method</keyword>
-      <keyword>line-dasharray</keyword>
-      <keyword>line-dash-offset</keyword>
-      <keyword>line-miterlimit</keyword>
-      <keyword>line-clip</keyword>
-      <keyword>line-simplify</keyword>
-      <keyword>line-simplify-algorithm</keyword>
-      <keyword>line-smooth</keyword>
-      <keyword>line-offset</keyword>
-      <keyword>line-rasterizer</keyword>
-      <keyword>line-geometry-transform</keyword>
-      <keyword>line-comp-op</keyword>
-      <keyword>marker-file</keyword>
-      <keyword>marker-opacity</keyword>
-      <keyword>marker-fill-opacity</keyword>
-      <keyword>marker-line-color</keyword>
-      <keyword>marker-line-width</keyword>
-      <keyword>marker-line-opacity</keyword>
-      <keyword>marker-placement</keyword>
-      <keyword>marker-multi-policy</keyword>
-      <keyword>marker-type</keyword>
-      <keyword>marker-width</keyword>
-      <keyword>marker-height</keyword>
-      <keyword>marker-fill</keyword>
-      <keyword>marker-allow-overlap</keyword>
-      <keyword>marker-ignore-placement</keyword>
-      <keyword>marker-spacing</keyword>
-      <keyword>marker-max-error</keyword>
-      <keyword>marker-transform</keyword>
-      <keyword>marker-clip</keyword>
-      <keyword>marker-smooth</keyword>
-      <keyword>marker-geometry-transform</keyword>
-      <keyword>marker-comp-op</keyword>
-      <keyword>shield-name</keyword>
-      <keyword>shield-file</keyword>
-      <keyword>shield-face-name</keyword>
-      <keyword>shield-unlock-image</keyword>
-      <keyword>shield-size</keyword>
-      <keyword>shield-fill</keyword>
-      <keyword>shield-placement</keyword>
-      <keyword>shield-avoid-edges</keyword>
-      <keyword>shield-allow-overlap</keyword>
-      <keyword>shield-min-distance</keyword>
-      <keyword>shield-spacing</keyword>
-      <keyword>shield-min-padding</keyword>
-      <keyword>shield-wrap-width</keyword>
-      <keyword>shield-wrap-before</keyword>
-      <keyword>shield-wrap-character</keyword>
-      <keyword>shield-halo-fill</keyword>
-      <keyword>shield-halo-radius</keyword>
-      <keyword>shield-character-spacing</keyword>
-      <keyword>shield-line-spacing</keyword>
-      <keyword>shield-text-dx</keyword>
-      <keyword>shield-text-dy</keyword>
-      <keyword>shield-dx</keyword>
-      <keyword>shield-dy</keyword>
-      <keyword>shield-opacity</keyword>
-      <keyword>shield-text-opacity</keyword>
-      <keyword>shield-horizontal-alignment</keyword>
-      <keyword>shield-vertical-alignment</keyword>
-      <keyword>shield-placement-type</keyword>
-      <keyword>shield-placements</keyword>
-      <keyword>shield-text-transform</keyword>
-      <keyword>shield-justify-alignment</keyword>
-      <keyword>shield-transform</keyword>
-      <keyword>shield-clip</keyword>
-      <keyword>shield-comp-op</keyword>
-      <keyword>line-pattern-file</keyword>
-      <keyword>line-pattern-clip</keyword>
-      <keyword>line-pattern-simplify</keyword>
-      <keyword>line-pattern-simplify-algorithm</keyword>
-      <keyword>line-pattern-smooth</keyword>
-      <keyword>line-pattern-offset</keyword>
-      <keyword>line-pattern-geometry-transform</keyword>
-      <keyword>line-pattern-comp-op</keyword>
-      <keyword>polygon-pattern-file</keyword>
-      <keyword>polygon-pattern-alignment</keyword>
-      <keyword>polygon-pattern-gamma</keyword>
-      <keyword>polygon-pattern-opacity</keyword>
-      <keyword>polygon-pattern-clip</keyword>
-      <keyword>polygon-pattern-simplify</keyword>
-      <keyword>polygon-pattern-simplify-algorithm</keyword>
-      <keyword>polygon-pattern-smooth</keyword>
-      <keyword>polygon-pattern-geometry-transform</keyword>
-      <keyword>polygon-pattern-comp-op</keyword>
-      <keyword>raster-opacity</keyword>
-      <keyword>raster-filter-factor</keyword>
-      <keyword>raster-scaling</keyword>
-      <keyword>raster-mesh-size</keyword>
-      <keyword>raster-comp-op</keyword>
-      <keyword>raster-colorizer-default-mode</keyword>
-      <keyword>raster-colorizer-default-color</keyword>
-      <keyword>raster-colorizer-epsilon</keyword>
-      <keyword>raster-colorizer-stops</keyword>
-      <keyword>point-file</keyword>
-      <keyword>point-allow-overlap</keyword>
-      <keyword>point-ignore-placement</keyword>
-      <keyword>point-opacity</keyword>
-      <keyword>point-placement</keyword>
-      <keyword>point-transform</keyword>
-      <keyword>point-comp-op</keyword>
-      <keyword>text-name</keyword>
-      <keyword>text-face-name</keyword>
-      <keyword>text-size</keyword>
-      <keyword>text-ratio</keyword>
-      <keyword>text-wrap-width</keyword>
-      <keyword>text-wrap-before</keyword>
-      <keyword>text-wrap-character</keyword>
-      <keyword>text-spacing</keyword>
-      <keyword>text-character-spacing</keyword>
-      <keyword>text-line-spacing</keyword>
-      <keyword>text-label-position-tolerance</keyword>
-      <keyword>text-max-char-angle-delta</keyword>
-      <keyword>text-fill</keyword>
-      <keyword>text-opacity</keyword>
-      <keyword>text-halo-fill</keyword>
-      <keyword>text-halo-radius</keyword>
-      <keyword>text-halo-rasterizer</keyword>
-      <keyword>text-dx</keyword>
-      <keyword>text-dy</keyword>
-      <keyword>text-vertical-alignment</keyword>
-      <keyword>text-avoid-edges</keyword>
-      <keyword>text-min-distance</keyword>
-      <keyword>text-min-padding</keyword>
-      <keyword>text-min-path-length</keyword>
-      <keyword>text-allow-overlap</keyword>
-      <keyword>text-orientation</keyword>
-      <keyword>text-placement</keyword>
-      <keyword>text-placement-type</keyword>
-      <keyword>text-placements</keyword>
-      <keyword>text-transform</keyword>
-      <keyword>text-horizontal-alignment</keyword>
-      <keyword>text-align</keyword>
-      <keyword>text-clip</keyword>
-      <keyword>text-comp-op</keyword>
-      <keyword>building-fill</keyword>
-      <keyword>building-fill-opacity</keyword>
-      <keyword>building-height</keyword>
-      <keyword>debug-mode</keyword>
+    <define-regex id="background_properties">background-(color|image(-comp-op|-opacity)?)</define-regex>
+
+    <define-regex id="polygon_properties">polygon-(fill|opacity|gamma(-method)?|clip|simplify(-algorithm)?|smooth|geometry-transform|comp-op|pattern-(alignment|polygon-pattern-clip|comp-op|file|gamma|geometry-transform|opacity|simplify(-algorithm)?|smooth))</define-regex>
+
+    <define-regex id="line_properties">line-(color|width|opacity|join|cap|gamma(-method)?|dasharray|dash-offset|miterlimit|clip|simplify|simplify-algorithm|smooth|offset|rasterizer|geometry-transform|comp-op|pattern-(clip|comp-op|file|geometry-transform|offset|simplify(-algorithm)?|smooth))</define-regex>
+
+    <define-regex id="marker_properties">marker-(allow-overlap|clip|comp-op|file|fill(-opacity)?|geometry-transform|height|ignore-placement|line-(color|opacity|width)|max-error|multi-policy|opacity|placement|smooth|spacing|transform|type|width)</define-regex>
+
+    <define-regex id="global_properties">(direct-)?(image-filters)|comp-op|opacity|srs|buffer-size|base|font-directory|debug-mode</define-regex>
+
+    <define-regex id="point_properties">point-(allow-overlap|comp-op|file|ignore-placement|opacity|placement|transform)</define-regex>
+
+    <define-regex id="raster_properties">raster-(comp-op|filter-factor|mesh-size|opacity|scaling|colorizer-(default-(color|mode)|epsilon|stops))</define-regex>
+
+    <define-regex id="shield_properties">shield-(allow-overlap|avoid-edges|character-spacing|clip|comp-op|dx|dy|face-name|file|fill|halo-(fill|radius)|(horizontal|justify|vertical)-alignment|line-spacing|min-distance|min-padding|name|opacity|placement(-type|s)?|size|spacing|text-(dx|dy|opacity|transform)|transform|unlock-image|wrap-(before|character|width))</define-regex>
+
+    <define-regex id="text_properties">text-(align|allow-overlap|avoid-edges|character-spacing|clip|comp-op|dx|dy|face-name|fill|halo-(fill|radius|rasterizer)|(horizontal|vertical)-alignment|label-position-tolerance|line-spacing|max-char-angle-delta|min-(distance|padding|path-length)|name|opacity|orientation|placement(s|-type)?|ratio|size|spacing|transform|wrap-(before|character|width))</define-regex>
+
+    <define-regex id="building_properties">building-(fill(-opacity)?|height)</define-regex>
+
+    <context id="property">
+      <start>(\%{global_properties}|\%{background_properties}|\%{polygon_properties}|\%{line_properties}|\%{marker_properties}|\%{point_properties}|\%{raster_properties}|\%{shield_properties}|\%{text_properties}|\%{building_properties})\s*:</start>
+      <end>;</end>
+      <include>
+        <context sub-pattern="0" where="start" style-ref="keyword"/>
+        <context ref="def:string"/>
+        <context ref="def:single-quoted-string"/>
+        <context ref="def:line-continue"/>
+        <context ref="def:decimal"/>
+        <context ref="def:float"/>
+        <context ref="function"/>
+        <context ref="variable"/>
+        <context ref="boolean"/>
+        <context ref="hex"/>
+      </include>
     </context>
 
     <context id="selector" style-ref="selector">
