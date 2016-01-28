@@ -44,5 +44,7 @@ git-change [--old-name=OLD_NAME] [--old-email=OLD_EMAIL] \
 
 ## Gedit modules (GTKSourceView)
 
-In usr/share/gtksourceview-3.0/language-specs folder, there are my modules for gedit highlight.
+In /home/joxit/.local/share/gtksourceview-3.0/language-specs folder, there are my modules for gedit highlight.
 For now, only **Dockerfile** and **CartoCSS** highlight are available.
+
+You can add a link to your own ~/.local/share/gtksourceview-3.0/language-specs if you want my coloration style.
