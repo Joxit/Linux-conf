@@ -104,6 +104,9 @@ for arg in "$@"; do
       echo "under certain condition."
       exit 0
       ;;
+    -*)
+      echo "flag provided but not defined: $arg"
+      usage
   esac
   shift
 done
