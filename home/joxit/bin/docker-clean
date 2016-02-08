@@ -60,10 +60,10 @@ function get_containers() {
 # param 2: wrong flag
 # param 3: alowed flags
 function usage_wrong_flags() {
-  if [ -z "$1" ]; then
-    echo "flag provided but not defined for $1: $2"
+  if [ -n "$1" ]; then
+    echo "flag provided but not defined for $1: $2  $opt_containers"
   fi
-  if [ -z "$3" ]; then
+  if [ -n "$3" ]; then
     echo "Allowed flags are: $3"
   else
     echo "There is no allowed flags for this option"
@@ -74,8 +74,8 @@ function usage_wrong_flags() {
 for arg in "$@"; do
   case "$arg" in
     --images|--images=*)
-      if [ $opt_images ];; then
-        usage_wrong_flags "--images" "$arg" "-f -r"
+      if [ $opt_images ]; then
+        usage_wrong_flags "--images" "$arg" "-f -r";
       fi
       opt_images=true
       COMPLET_IMAGE_NAME="${arg#*=}"
@@ -92,7 +92,7 @@ for arg in "$@"; do
       fi
       ;;
     --containers=*)
-      if [ $opt_containers ];; then
+      if [ $opt_containers ]; then
         usage_wrong_flags "--containers" "$arg" "-f"
       fi
       opt_containers=true
@@ -102,7 +102,7 @@ for arg in "$@"; do
       fi
       ;;
     --repository=*)
-      if [ $opt_repository ];; then
+      if [ $opt_repository ]; then
         usage_wrong_flags "--repository" "$arg" "-f"
       fi
       opt_repository=true
@@ -131,6 +131,7 @@ for arg in "$@"; do
     -*)
       echo "flag provided but not defined: $arg"
       usage
+      ;;
   esac
   shift
 done
