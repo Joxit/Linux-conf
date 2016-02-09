@@ -74,9 +74,11 @@ function usage_wrong_flags() {
 for arg in "$@"; do
   case "$arg" in
     --images|--images=*)
-      if [ $opt_images ]; then
-        usage_wrong_flags "--images" "$arg" "-f -r";
+      if [ -n "$CUR_OPT" ]; then
+        usage_wrong_flags "$CUR_OPT" "$arg" "$CUR_FLAGS"
       fi
+      CUR_OPT="--images"
+      CUR_FLAGS="-f -r"
       opt_images=true
       COMPLET_IMAGE_NAME="${arg#*=}"
       IMAGE_NAME="${COMPLET_IMAGE_NAME%%:*}"
@@ -92,9 +94,11 @@ for arg in "$@"; do
       fi
       ;;
     --containers=*)
-      if [ $opt_containers ]; then
-        usage_wrong_flags "--containers" "$arg" "-f"
+      if [ -n "$CUR_OPT" ]; then
+        usage_wrong_flags "$CUR_OPT" "$arg" "$CUR_FLAGS"
       fi
+      CUR_OPT="--containers"
+      CUR_FLAGS="-f"
       opt_containers=true
       CONTAINERS_IMAGE_NAME="${arg#*=}"
       if [ -z "${CONTAINERS_IMAGE_NAME}" ]; then
@@ -102,9 +106,11 @@ for arg in "$@"; do
       fi
       ;;
     --repository=*)
-      if [ $opt_repository ]; then
-        usage_wrong_flags "--repository" "$arg" "-f"
+      if [ -n "$CUR_OPT" ]; then
+        usage_wrong_flags "$CUR_OPT" "$arg" "$CUR_FLAGS"
       fi
+      CUR_OPT="--repository"
+      CUR_FLAGS="-f"
       opt_repository=true
       REPOSITORY_NAME="${arg#*=}"
       if [ -z "${REPOSITORY_NAME}" ]; then
