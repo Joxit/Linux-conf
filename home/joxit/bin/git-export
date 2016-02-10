@@ -1,0 +1,4 @@
+#!/bin/bash
+
+SHA1=`git log -n 1 --pretty=%h HEAD`
+git archive -o $SHA1.tgz HEAD
