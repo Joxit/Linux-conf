@@ -42,6 +42,10 @@ git-change [--old-name=OLD_NAME] [--old-email=OLD_EMAIL] \
 	[--name=NEW_NAME] [--email=NEW_EMAIL]"
 ```
 
+### git-export
+
+Export your HEAD into a tgz file. The file name will be the SHA1 of the commit.
+
 ## Gedit modules (GTKSourceView)
 
 In /home/joxit/.local/share/gtksourceview-3.0/language-specs folder, there are my modules for gedit highlight.
