@@ -26,3 +26,12 @@ You need next delete local branch.
 
 Git-extras command: `git delete-branch <branch name>`.
 This will delete local and remote branches.
+
+## Undo latest commit
+
+This will juste remove commits and not changes.
+Your changes will be in index if you use --soft and deleted if --hard.
+
+Standard git command: `git reset --soft [HEAD^|HEAD~number of commit to remove]`.
+
+Git-extras command: `git undo [--hard|--soft] [number of commit to remove]`
