@@ -35,3 +35,11 @@ Your changes will be in index if you use --soft and deleted if --hard.
 Standard git command: `git reset --soft [HEAD^|HEAD~number of commit to remove]`.
 
 Git-extras command: `git undo [--hard|--soft] [number of commit to remove]`
+
+## Basics
+
+### Push a branch
+
+Push a `l` local branch to a `r` remote branch: `git push origin l:r`
+
+Push a `b` local branch to a `b` remote branch: `git push origin b`
