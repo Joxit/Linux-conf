@@ -1,5 +1,9 @@
 # Packages List
 
+## Custom repository
+
+http://www.deb-multimedia.org/
+
 ## Programming
 ### C programming
 gcc
@@ -46,3 +50,5 @@ myspell-fr # French dictionary for myspell
 
 ## Media
 mkvtoolnix-gui # Set of tools to work with Matroska files
+caffeine # Prevent screen lock during fullscreen app
+kodi # Kodi Media Center
