@@ -43,3 +43,15 @@ Reload conf files for a daemon :
 ```sh
 systemctl daemon-reload NAME
 ```
+
+## File stat
+
+Get some file stats :
+
+```sh
+stat -c %y FILE # time of last data modification, iso format
+
+stat -f -c %s FILE # total size, in bytes
+# or
+du -sk FILE # total size, in kilo-bytes, calculate directories
+```
