@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for file in *; do
+  if [ -f "$file" ]; then
+    date="$(date --date="$(stat -c %y "$file")"  +"%Y.%m")"
+    mkdir -p "$date"
+    if [ -d "$date" ]; then
+      mv -n "$file" "$date"
+    else
+      echo "Something goes wrong with file '$file' moved to '$date'"
+    fi
+  fi
+done
