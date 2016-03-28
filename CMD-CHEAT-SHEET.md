@@ -1,5 +1,4 @@
 # Cmd cheat sheet
-=====
 
 ## Random
 

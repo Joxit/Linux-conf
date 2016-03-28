@@ -1,5 +1,4 @@
 # Git Cheat Sheet
-===========
 
 I will present you some cool command with git.
 Some commands come from [git-extras](https://github.com/tj/git-extras)
