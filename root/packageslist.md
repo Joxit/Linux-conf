@@ -39,7 +39,12 @@ htop # like top with color and cool effects
 iotop # show i/o usage
 iftop # Show network usage
 
+## GUI monitoring
+wireshark # network traffic analyzer
+gnome-system-monitor # process viewer and system resource monitor
+
 ## Flash plugin for firefox
+flashplugin-nonfree # or
 browser-plugin-freshplayer-pepperflash
 
 ## LaTeX
@@ -47,6 +52,10 @@ texlive
 texlive-lang-french
 hyphen-fr # French hyphenation patterns
 myspell-fr # French dictionary for myspell
+
+## Miscellaneous
+gnuplot # Command-line driven interactive plotting program
+terminator # multiple GNOME terminals in one window
 
 ## Media
 mkvtoolnix-gui # Set of tools to work with Matroska files
