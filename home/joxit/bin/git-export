@@ -1,4 +1,4 @@
 #!/bin/bash
 
-SHA1=`git log -n 1 --pretty=%h HEAD`
-git archive -o $SHA1.tgz HEAD
+NAME=`git log -n 1 --date=short --pretty="%cd_%h" HEAD`
+git archive -o $NAME.tgz HEAD
