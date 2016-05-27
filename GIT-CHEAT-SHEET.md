@@ -20,7 +20,7 @@ File output is `<repo name>.<sha1>.zip`.
 
 ## Delete a remote branch
 
-Standard git command: `git push <remote> --delete <branch name>`.
+Standard git command: `git push <remote> --delete <branch name>` or `git push origin :<branch name>`.
 You need next delete local branch.
 
 Git-extras command: `git delete-branch <branch name>`.
