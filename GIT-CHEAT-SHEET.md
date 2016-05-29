@@ -37,8 +37,22 @@ Git-extras command: `git undo [--hard|--soft] [number of commit to remove]`
 
 ## Basics
 
+### Create a repository
+
+1. `git init`
+2. `git add <your file> && git commit -m 'Initial commit'`
+3. `git remote add origin <your remote url>`
+4. `git push -u origin master`
+
 ### Push a branch
 
 Push a `l` local branch to a `r` remote branch: `git push origin l:r`
 
 Push a `b` local branch to a `b` remote branch: `git push origin b`
+
+### Rebase a branch
+
+Your HEAD is not in fast-forward with your `b` remote branch. You got two choices :
+
+1. `git pull --rebase origin b`
+2. `git fetch && git rebase origin b`
