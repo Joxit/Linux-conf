@@ -8,11 +8,12 @@
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
  '(custom-enabled-themes (quote (tango-dark)))
- '(show-paren-mode t)
- '(sh-indentation 2)
- '(sh-basic-offset 2)
- '(show-trailing-whitespace t)
  '(global-whitespace-mode t)
+ '(indent-tabs-mode nil)
+ '(sh-basic-offset 2)
+ '(sh-indentation 2)
+ '(show-paren-mode t)
+ '(show-trailing-whitespace t)
  '(size-indication-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
