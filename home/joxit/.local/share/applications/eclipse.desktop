@@ -2,7 +2,7 @@
 Comment=
 Exec=/home/joxit/bin/eclipse
 Icon=/home/joxit/Applications/eclipse/icon.xpm
-Name=Eclipse Luna
+Name=Eclipse Neon
 StartupNotify=true
 Terminal=0
 TerminalOptions=
