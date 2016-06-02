@@ -19,6 +19,16 @@ ocaml
 ledit # 'ledit ocaml'
 ```
 
+### Rust programming
+```
+rustc # Rust's compiler
+cargo # Rust's package manager
+```
+Via cargo :
+```
+cargo rustfmt # Rust formatter
+```
+
 ### Git
 ```
 git
@@ -84,4 +94,9 @@ terminator # multiple GNOME terminals in one window
 mkvtoolnix-gui # Set of tools to work with Matroska files
 caffeine # Prevent screen lock during fullscreen app
 kodi # Kodi Media Center
+```
+
+## Foramtter
+```
+jq # JSON processor
 ```

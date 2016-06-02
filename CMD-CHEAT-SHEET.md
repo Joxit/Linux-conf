@@ -54,3 +54,8 @@ stat -f -c %s FILE # total size, in bytes
 # or
 du -sk FILE # total size, in kilo-bytes, calculate directories
 ```
+
+## Weather
+```sh
+curl http://wttr.in/moon
+```
