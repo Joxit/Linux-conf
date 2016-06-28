@@ -71,6 +71,75 @@ function usage_wrong_flags() {
   exit 0
 }
 
+function get_options() {
+  RES=""
+  for arg in "$@"; do
+    case "$arg" in
+      -*)
+        RES="$RES $arg"
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
+  echo "$RES"
+}
+
+function get_args() {
+  for arg in "$@"; do
+    case "$arg" in
+      -*)
+        ;;
+      *)
+        break
+        ;;
+    esac
+    shift
+  done
+  echo "$@"
+}
+
+if [ "$1" = "images" ]; then
+  shift
+  OPTS="$(get_options $@)"
+  IMAGES="$(get_args $@)"
+  echo $OPTS
+  echo $IMAGES
+  for opt in "$OPTS"; do
+    case "$opt" in
+      -f|--force)
+        opt_force=" -f "
+        ;;
+      -r|--recursive)
+        opt_recursive=true
+        ;;
+      -h|--help)
+        echo "Usage: $0 images [OPTIONS] [REPOSITORY[:TAG]...]"
+        ;;
+      esac
+  done
+
+  if [ -z "$IMAGES" ]; then
+    echo "Will delete none images"
+    IMAGES=$(docker images \
+                | sed 's/  */ /g' \
+                | grep "^<none> " \
+                | cut -d' ' -f 3 \
+                | sort \
+                | uniq)
+  fi
+
+  for image in $IMAGES; do
+    if [ $opt_recursive ]; then
+      containers=$(get_containers $image)
+      echo $containers
+    fi
+    docker rmi $opt_force $image
+  done
+  exit 0
+fi
+
 for arg in "$@"; do
   case "$arg" in
     --images|--images=*)
