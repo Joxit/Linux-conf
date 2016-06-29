@@ -39,6 +39,32 @@ for example)
             Display version information, and exit."
   exit 0
 }
+function usage_images {
+  echo "docker-clean images [OPTIONS] [IMAGE_NAMES[:TAG]...]
+    Delete all dangling (<none>) images if no repositories provided.
+    Delete all images named IMAGE_NAME and their tags or only an image \
+with its tag (name and tag must match and regex can be used). \
+You can use a list of images.
+    OPTIONS :
+        -f, --force
+            Append -f in docker options when possible ('docker rmi -f image' \
+for example)
+        -r, --recursive
+            When deleting image, remove also their containers
+        -h, --help
+            Display a help message, and exit.
+        -v, --version
+            Display version information, and exit."
+  exit 0
+}
+
+function show_version {
+  echo "$0  Copyright (C) 2015-2016 Joxit"
+  echo "This program comes with ABSOLUTELY NO WARRANTY."
+  echo "This is free software, and you are welcome to redistribute it"
+  echo "under certain condition."
+  exit 0
+}
 
 function get_containers() {
   if [ "$1" = "" ]; then
@@ -50,6 +76,10 @@ function get_containers() {
     if [ $(echo $line \
               | cut -d' ' -f 2 \
               | grep -E ${IMAGES_DISJUNCTION}) ]; then
+      echo "$(echo $line | cut -d' ' -f 1)"
+    elif [ $(echo $line:latest \
+                | cut -d' ' -f 2 \
+                | grep -E ${IMAGES_DISJUNCTION}) ]; then
       echo "$(echo $line | cut -d' ' -f 1)"
     fi
   done
@@ -106,7 +136,7 @@ if [ "$1" = "images" ]; then
   IMAGES="$(get_args $@)"
   echo $OPTS
   echo $IMAGES
-  for opt in "$OPTS"; do
+  for opt in $OPTS; do
     case "$opt" in
       -f|--force)
         opt_force=" -f "
@@ -115,7 +145,10 @@ if [ "$1" = "images" ]; then
         opt_recursive=true
         ;;
       -h|--help)
-        echo "Usage: $0 images [OPTIONS] [REPOSITORY[:TAG]...]"
+        usage_images
+        ;;
+      -v|--version)
+        show_version
         ;;
       esac
   done
@@ -128,14 +161,44 @@ if [ "$1" = "images" ]; then
                 | cut -d' ' -f 3 \
                 | sort \
                 | uniq)
+  else
+    TMP=""
+    for image in $IMAGES; do
+      IMAGE_NAME="${image%%:*}"
+      # Check if $image contains :
+      if [ "${image##*:*}" ]; then
+        IMAGE_TAG="*"
+      else
+        IMAGE_TAG="${image#*:}"
+      fi
+      TMP="$TMP $(docker images \
+                  | sed 's/  */ /g' \
+                  | grep "^$IMAGE_NAME $IMAGE_TAG " \
+                  | cut -d' ' -f 1-2 --output-delimiter=':' \
+                  | sort \
+                  | uniq)"
+    done
+    IMAGES=$TMP
   fi
-
+  if [ -z "${IMAGES// }" ]; then
+    echo "There are no images to delete"
+  fi
   for image in $IMAGES; do
-    if [ $opt_recursive ]; then
-      containers=$(get_containers $image)
-      echo $containers
+    delete=true
+    CONTAINERS=`get_containers $image $(docker images -q $image)`
+    if [ -n "${CONTAINERS}" ]; then
+      if [ $opt_recursive ]; then
+        echo "Deleting associated containers of $image first"
+        docker rm ${opt_force} ${CONTAINERS}
+      else
+        echo "I can't delete $image, delete containers first or use -r option : ${CONTAINERS}"
+        delete=false
+      fi
     fi
-    docker rmi $opt_force $image
+    if [ $delete = true ]; then
+      echo "Deleting ${image} images (all tags)"
+      docker rmi ${opt_force} ${image}
+    fi
   done
   exit 0
 fi
@@ -197,11 +260,7 @@ for arg in "$@"; do
       usage
       ;;
     -v|--version)
-      echo "$0  Copyright (C) 2015-2016 Joxit"
-      echo "This program comes with ABSOLUTELY NO WARRANTY."
-      echo "This is free software, and you are welcome to redistribute it"
-      echo "under certain condition."
-      exit 0
+      show_version
       ;;
     -*)
       echo "flag provided but not defined: $arg"
