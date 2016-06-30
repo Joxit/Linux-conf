@@ -17,13 +17,11 @@
 
 set -e
 function usage {
-  echo "docker-clean [OPTIONS]
-    OPTIONS :
-        --images [-f] [-r]
-            Delete all images named <none> (use docker rmi for <none> images)
-        --images=IMAGE_NAME:IMAGE_TAG [-f] [-r]
-            Delete all images named IMAGE_NAME and their tags or only an image \
-with its tag (name and tag must match and regex can be used)
+  echo "docker-clean [OPTIONS] COMMAND
+    COMMAND :
+        images   Delete a danglings images or a list of images and optionally \
+their containers too.
+    OPTIONS:
         --containers=IMAGES_NAMES [-f]
             Delete all containers for a list of images
         --repository=REPOSITORY_NAMES [-f]
@@ -47,8 +45,8 @@ with its tag (name and tag must match and regex can be used). \
 You can use a list of images.
     OPTIONS :
         -f, --force
-            Append -f in docker options when possible ('docker rmi -f image' \
-for example)
+            Append -f in docker options for image removing and container \
+if -r is used.
         -r, --recursive
             When deleting image, remove also their containers
         -h, --help
@@ -205,26 +203,6 @@ fi
 
 for arg in "$@"; do
   case "$arg" in
-    --images|--images=*)
-      if [ -n "$CUR_OPT" ]; then
-        usage_wrong_flags "$CUR_OPT" "$arg" "$CUR_FLAGS"
-      fi
-      CUR_OPT="--images"
-      CUR_FLAGS="-f -r"
-      opt_images=true
-      COMPLET_IMAGE_NAME="${arg#*=}"
-      IMAGE_NAME="${COMPLET_IMAGE_NAME%%:*}"
-      # Check if COMPLET_IMAGE_NAME contains :
-      if [ "${COMPLET_IMAGE_NAME##*:*}" ]; then
-        IMAGE_TAG="*"
-      else
-        IMAGE_TAG="${COMPLET_IMAGE_NAME#*:}"
-      fi
-      if [ "${arg}" = "--images" ] || [ -z "${IMAGE_NAME}" ]; then
-        IMAGE_NAME="<none>"
-        none=true
-      fi
-      ;;
     --containers=*)
       if [ -n "$CUR_OPT" ]; then
         usage_wrong_flags "$CUR_OPT" "$arg" "$CUR_FLAGS"
@@ -269,36 +247,7 @@ for arg in "$@"; do
   esac
   shift
 done
-if [ $opt_images ]; then
-  if [ $none ]; then
-    IMAGES=$(docker images \
-                | sed 's/  */ /g' \
-                | grep "^$IMAGE_NAME " \
-                | cut -d' ' -f 3 \
-                | sort \
-                | uniq)
-  else
-    IMAGES=$(docker images \
-                | sed 's/  */ /g' \
-                | grep "^$IMAGE_NAME $IMAGE_TAG " \
-                | cut -d' ' -f 1-2 --output-delimiter=':' \
-                | sort \
-                | uniq)
-  fi
-  if [ "${IMAGES}" ]; then
-    if [ $opt_recursive ]; then
-      CONTAINERS=`get_containers $IMAGES`
-      if [ "${CONTAINERS}" ]; then
-        echo "Deleting associated containers first"
-        docker rm ${DOCKER_OPTS} ${CONTAINERS}
-      fi
-    fi
-    echo "Deleting ${IMAGE_NAME} images (all tags)"
-    docker rmi ${DOCKER_OPTS} ${IMAGES}
-  else
-    echo "There are no images to delete"
-  fi
-elif [ $opt_containers ]; then
+if [ $opt_containers ]; then
   echo "Deleting containers of $CONTAINERS_IMAGE_NAME"
   CONTAINERS=`get_containers $CONTAINERS_IMAGE_NAME`
   if [ "$CONTAINERS" ]; then
