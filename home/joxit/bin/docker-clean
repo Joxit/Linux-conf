@@ -75,8 +75,9 @@ function get_containers() {
               | cut -d' ' -f 2 \
               | grep -E ${IMAGES_DISJUNCTION}) ]; then
       echo "$(echo $line | cut -d' ' -f 1)"
-    elif [ $(echo $line:latest \
+    elif [ $(echo $line \
                 | cut -d' ' -f 2 \
+                | sed 's/$/:latest/' \
                 | grep -E ${IMAGES_DISJUNCTION}) ]; then
       echo "$(echo $line | cut -d' ' -f 1)"
     fi
@@ -132,8 +133,6 @@ if [ "$1" = "images" ]; then
   shift
   OPTS="$(get_options $@)"
   IMAGES="$(get_args $@)"
-  echo $OPTS
-  echo $IMAGES
   for opt in $OPTS; do
     case "$opt" in
       -f|--force)
@@ -144,9 +143,6 @@ if [ "$1" = "images" ]; then
         ;;
       -h|--help)
         usage_images
-        ;;
-      -v|--version)
-        show_version
         ;;
       esac
   done
@@ -196,6 +192,44 @@ if [ "$1" = "images" ]; then
     if [ $delete = true ]; then
       echo "Deleting ${image} images (all tags)"
       docker rmi ${opt_force} ${image}
+    fi
+  done
+  exit 0
+elif [ "$1" = "containers" ]; then
+  shift
+  OPTS="$(get_options $@)"
+  IMAGES="$(get_args $@)"
+  for opt in $OPTS; do
+    case "$opt" in
+      -f|--force)
+        opt_force=" -f "
+        ;;
+      -h|--help)
+        usage
+        ;;
+      -v|--volumes)
+        opt_volumes=" -v "
+        ;;
+      esac
+  done
+  if [ -z "${IMAGES// }" ]; then
+    usage
+  fi
+  for image in $IMAGES; do
+    IMAGE_NAME="${image%%:*}"
+    # Check if $image contains :
+    if [ "${image##*:*}" ]; then
+      IMAGE_TAG="latest"
+    else
+      IMAGE_TAG="${image#*:}"
+    fi
+    CONTAINERS=`get_containers "$IMAGE_NAME:$IMAGE_TAG"`
+    echo $CONTAINERS
+    if [ "$CONTAINERS" ]; then
+      echo "Deleting containers of $IMAGE_NAME:$IMAGE_TAG"
+      docker rm ${opt_force} ${opt_volumes} ${CONTAINERS}
+    else
+      echo "There are no containers to delete for $IMAGE_NAME:$IMAGE_TAG"
     fi
   done
   exit 0
