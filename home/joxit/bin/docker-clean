@@ -19,11 +19,10 @@ set -e
 function usage {
   echo "docker-clean [OPTIONS] COMMAND
     COMMAND :
-        images   Delete a danglings images or a list of images and optionally \
-their containers too.
+        images     Delete a danglings images or a list of images and \
+optionally their containers too.
+        containers Delete all containers for a list of images.
     OPTIONS:
-        --containers=IMAGES_NAMES [-f]
-            Delete all containers for a list of images
         --repository=REPOSITORY_NAMES [-f]
             Delete all images from a repository
         -f, --force
@@ -50,9 +49,19 @@ if -r is used.
         -r, --recursive
             When deleting image, remove also their containers
         -h, --help
-            Display a help message, and exit.
-        -v, --version
-            Display version information, and exit."
+            Display a help message, and exit."
+  exit 0
+}
+function usage_containers {
+  echo "docker-clean containers [OPTIONS] [IMAGE_NAMES[:TAG]...]
+    Delete all containers for a list of images.
+    OPTIONS :
+        -f, --force
+            Append -f in docker options for container removing.
+        -v, --volumes
+            Append -v in docker options for container removing.
+        -h, --help
+            Display a help message, and exit."
   exit 0
 }
 
@@ -185,7 +194,8 @@ if [ "$1" = "images" ]; then
         echo "Deleting associated containers of $image first"
         docker rm ${opt_force} ${CONTAINERS}
       else
-        echo "I can't delete $image, delete containers first or use -r option : ${CONTAINERS}"
+        echo "I can't delete $image, delete containers first or use \
+-r option : ${CONTAINERS}"
         delete=false
       fi
     fi
@@ -205,7 +215,7 @@ elif [ "$1" = "containers" ]; then
         opt_force=" -f "
         ;;
       -h|--help)
-        usage
+        usage_containers
         ;;
       -v|--volumes)
         opt_volumes=" -v "
@@ -213,7 +223,7 @@ elif [ "$1" = "containers" ]; then
       esac
   done
   if [ -z "${IMAGES// }" ]; then
-    usage
+    usage_containers
   fi
   for image in $IMAGES; do
     IMAGE_NAME="${image%%:*}"
@@ -224,7 +234,6 @@ elif [ "$1" = "containers" ]; then
       IMAGE_TAG="${image#*:}"
     fi
     CONTAINERS=`get_containers "$IMAGE_NAME:$IMAGE_TAG"`
-    echo $CONTAINERS
     if [ "$CONTAINERS" ]; then
       echo "Deleting containers of $IMAGE_NAME:$IMAGE_TAG"
       docker rm ${opt_force} ${opt_volumes} ${CONTAINERS}
@@ -237,18 +246,6 @@ fi
 
 for arg in "$@"; do
   case "$arg" in
-    --containers=*)
-      if [ -n "$CUR_OPT" ]; then
-        usage_wrong_flags "$CUR_OPT" "$arg" "$CUR_FLAGS"
-      fi
-      CUR_OPT="--containers"
-      CUR_FLAGS="-f"
-      opt_containers=true
-      CONTAINERS_IMAGE_NAME="${arg#*=}"
-      if [ -z "${CONTAINERS_IMAGE_NAME}" ]; then
-        usage
-      fi
-      ;;
     --repository=*)
       if [ -n "$CUR_OPT" ]; then
         usage_wrong_flags "$CUR_OPT" "$arg" "$CUR_FLAGS"
@@ -281,15 +278,7 @@ for arg in "$@"; do
   esac
   shift
 done
-if [ $opt_containers ]; then
-  echo "Deleting containers of $CONTAINERS_IMAGE_NAME"
-  CONTAINERS=`get_containers $CONTAINERS_IMAGE_NAME`
-  if [ "$CONTAINERS" ]; then
-    docker rm ${DOCKER_OPTS} ${CONTAINERS}
-  else
-    echo "There are no containers to delete"
-  fi
-elif [ $opt_repository ]; then
+if [ $opt_repository ]; then
   IMAGES=$(docker images \
               | sed 's/  */ /g' \
               | grep "^$REPOSITORY_NAME\/[^ ]* " \
