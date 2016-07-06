@@ -1,0 +1,26 @@
+"*":
+  "atom-beautify":
+    css:
+      indent_size: 2
+      newline_between_rules: true
+    html:
+      indent_size: 2
+    js:
+      indent_size: 2
+    json:
+      indent_size: 2
+    riot:
+      indent_size: 2
+    rust:
+      beautify_on_save: true
+      rustfmt_path: "/home/joxit/.cargo/bin/rustfmt"
+  "gtk-dark-theme": {}
+  rustfmt:
+    binPath: "/home/joxit/.cargo/bin/rustfmt"
+    fmtOnSave: false
+  welcome:
+    showOnStartup: false
+  whitespace:
+    ensureSingleTrailingNewline: false
+    removeTrailingWhitespace: false
+
