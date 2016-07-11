@@ -242,6 +242,34 @@ elif [ "$1" = "containers" ]; then
     fi
   done
   exit 0
+elif [ "$1" = "repositories" ]; then
+  shift
+  OPTS="$(get_options $@)"
+  REPOS="$(get_args $@)"
+  for opt in $OPTS; do
+    case "$opt" in
+      -f|--force)
+        opt_force=" -f "
+        ;;
+      -h|--help)
+        usage
+        ;;
+      esac
+  done
+
+  for repo in $REPOS; do
+    IMAGES=$(docker images \
+                | sed 's/  */ /g' \
+                | grep "^$repo\/[^ ]* " \
+                | cut -d' ' -f 1-2 --output-delimiter=':')
+    if [ "${IMAGES}" ]; then
+      echo "Deleting all images from $repo/"
+      docker rmi ${opt_force} ${IMAGES}
+    else
+      echo "There are no images to delete"
+    fi
+  done
+  exit 0
 fi
 
 for arg in "$@"; do
