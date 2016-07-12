@@ -19,17 +19,11 @@ set -e
 function usage {
   echo "docker-clean [OPTIONS] COMMAND
     COMMAND :
-        images     Delete a danglings images or a list of images and \
+        images       Delete a danglings images or a list of images and \
 optionally their containers too.
-        containers Delete all containers for a list of images.
+        containers   Delete all containers for a list of images.
+        repositories Delete all images from a repository.
     OPTIONS:
-        --repository=REPOSITORY_NAMES [-f]
-            Delete all images from a repository
-        -f, --force
-            Append -f in docker options when possible ('docker rmi -f image' \
-for example)
-        -r, --recursive
-            When deleting image, remove also their containers
         -h, --help
             Display a help message, and exit.
         -v, --version
@@ -65,6 +59,18 @@ function usage_containers {
   exit 0
 }
 
+function usage_repositories {
+  echo "docker-clean repositories [OPTIONS] [REPOSITORY...]
+    Delete all images from a repository e.g it will delete joxit/node \
+joxit/node:carto and joxit/kosmtik if you execute docker-clean repositories \
+joxit
+    OPTIONS :
+        -f, --force
+            Append -f in docker options for image removing.
+        -h, --help
+            Display a help message, and exit."
+  exit 0
+}
 function show_version {
   echo "$0  Copyright (C) 2015-2016 Joxit"
   echo "This program comes with ABSOLUTELY NO WARRANTY."
@@ -270,53 +276,8 @@ elif [ "$1" = "repositories" ]; then
     fi
   done
   exit 0
-fi
-
-for arg in "$@"; do
-  case "$arg" in
-    --repository=*)
-      if [ -n "$CUR_OPT" ]; then
-        usage_wrong_flags "$CUR_OPT" "$arg" "$CUR_FLAGS"
-      fi
-      CUR_OPT="--repository"
-      CUR_FLAGS="-f"
-      opt_repository=true
-      REPOSITORY_NAME="${arg#*=}"
-      if [ -z "${REPOSITORY_NAME}" ]; then
-        usage
-      fi
-      ;;
-    -f|--force)
-      opt_force=true
-      DOCKER_OPTS="${DOCKER_OPTS} -f"
-      ;;
-    -r|--recursive)
-      opt_recursive=true
-      ;;
-    -h|--help)
-      usage
-      ;;
-    -v|--version)
-      show_version
-      ;;
-    -*)
-      echo "flag provided but not defined: $arg"
-      usage
-      ;;
-  esac
-  shift
-done
-if [ $opt_repository ]; then
-  IMAGES=$(docker images \
-              | sed 's/  */ /g' \
-              | grep "^$REPOSITORY_NAME\/[^ ]* " \
-              | cut -d' ' -f 1-2 --output-delimiter=':')
-  if [ "${IMAGES}" ]; then
-    echo "Deleting all images from $REPOSITORY_NAME"
-    docker rmi ${DOCKER_OPTS} ${IMAGES}
-  else
-    echo "There are no images to delete"
-  fi
+elif [ "$1" = "-v" ] || [ "$1" = "--verion" ]; then
+  show_version
 else
   usage
 fi
