@@ -100,21 +100,6 @@ function get_containers() {
   return 0
 }
 
-# param 1: master flag name
-# param 2: wrong flag
-# param 3: alowed flags
-function usage_wrong_flags() {
-  if [ -n "$1" ]; then
-    echo "flag provided but not defined for $1: $2  $opt_containers"
-  fi
-  if [ -n "$3" ]; then
-    echo "Allowed flags are: $3"
-  else
-    echo "There is no allowed flags for this option"
-  fi
-  exit 0
-}
-
 function get_options() {
   RES=""
   for arg in "$@"; do
@@ -258,11 +243,14 @@ elif [ "$1" = "repositories" ]; then
         opt_force=" -f "
         ;;
       -h|--help)
-        usage
+        usage_repositories
         ;;
       esac
   done
 
+  if [ -z "${REPOS// }" ]; then
+    usage_repositories
+  fi
   for repo in $REPOS; do
     IMAGES=$(docker images \
                 | sed 's/  */ /g' \
@@ -272,7 +260,7 @@ elif [ "$1" = "repositories" ]; then
       echo "Deleting all images from $repo/"
       docker rmi ${opt_force} ${IMAGES}
     else
-      echo "There are no images to delete"
+      echo "There are no images to delete for $repo/"
     fi
   done
   exit 0
