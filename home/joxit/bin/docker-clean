@@ -119,7 +119,7 @@ function get_args() {
   for arg in "$@"; do
     case "$arg" in
       -*)
-        ;;
+      ;;
       *)
         break
         ;;
@@ -129,143 +129,150 @@ function get_args() {
   echo "$@"
 }
 
-if [ "$1" = "images" ]; then
-  shift
-  OPTS="$(get_options $@)"
-  IMAGES="$(get_args $@)"
-  for opt in $OPTS; do
-    case "$opt" in
-      -f|--force)
-        opt_force=" -f "
-        ;;
-      -r|--recursive)
-        opt_recursive=true
-        ;;
-      -h|--help)
-        usage_images
-        ;;
+case "$1" in
+  images)
+    shift
+    OPTS="$(get_options $@)"
+    IMAGES="$(get_args $@)"
+    for opt in $OPTS; do
+      case "$opt" in
+        -f|--force)
+          opt_force=" -f "
+          ;;
+        -r|--recursive)
+          opt_recursive=true
+          ;;
+        -h|--help)
+          usage_images
+          ;;
       esac
-  done
+    done
 
-  if [ -z "$IMAGES" ]; then
-    echo "Will delete none images"
-    IMAGES=$(docker images \
-                | sed 's/  */ /g' \
-                | grep "^<none> " \
-                | cut -d' ' -f 3 \
-                | sort \
-                | uniq)
-  else
-    TMP=""
-    for image in $IMAGES; do
-      IMAGE_NAME="${image%%:*}"
-      # Check if $image contains :
-      if [ "${image##*:*}" ]; then
-        IMAGE_TAG="*"
-      else
-        IMAGE_TAG="${image#*:}"
-      fi
-      TMP="$TMP $(docker images \
+    if [ -z "$IMAGES" ]; then
+      echo "Will delete none images"
+      IMAGES=$(docker images \
+                  | sed 's/  */ /g' \
+                  | grep "^<none> " \
+                  | cut -d' ' -f 3 \
+                  | sort \
+                  | uniq)
+    else
+      TMP=""
+      for image in $IMAGES; do
+        IMAGE_NAME="${image%%:*}"
+        # Check if $image contains :
+        if [ "${image##*:*}" ]; then
+          IMAGE_TAG="*"
+        else
+          IMAGE_TAG="${image#*:}"
+        fi
+        TMP="$TMP $(docker images \
                   | sed 's/  */ /g' \
                   | grep "^$IMAGE_NAME $IMAGE_TAG " \
                   | cut -d' ' -f 1-2 --output-delimiter=':' \
                   | sort \
                   | uniq)"
-    done
-    IMAGES=$TMP
-  fi
-  if [ -z "${IMAGES// }" ]; then
-    echo "There are no images to delete"
-  fi
-  for image in $IMAGES; do
-    delete=true
-    CONTAINERS=`get_containers $image $(docker images -q $image)`
-    if [ -n "${CONTAINERS}" ]; then
-      if [ $opt_recursive ]; then
-        echo "Deleting associated containers of $image first"
-        docker rm ${opt_force} ${CONTAINERS}
-      else
-        echo "I can't delete $image, delete containers first or use \
+      done
+      IMAGES=$TMP
+    fi
+    if [ -z "${IMAGES// }" ]; then
+      echo "There are no images to delete"
+    fi
+    for image in $IMAGES; do
+      delete=true
+      CONTAINERS=`get_containers $image $(docker images -q $image)`
+      if [ -n "${CONTAINERS}" ]; then
+        if [ $opt_recursive ]; then
+          echo "Deleting associated containers of $image first"
+          docker rm ${opt_force} ${CONTAINERS}
+        else
+          echo "I can't delete $image, delete containers first or use \
 -r option : ${CONTAINERS}"
-        delete=false
+          delete=false
+        fi
       fi
-    fi
-    if [ $delete = true ]; then
-      echo "Deleting ${image} images (all tags)"
-      docker rmi ${opt_force} ${image}
-    fi
-  done
-  exit 0
-elif [ "$1" = "containers" ]; then
-  shift
-  OPTS="$(get_options $@)"
-  IMAGES="$(get_args $@)"
-  for opt in $OPTS; do
-    case "$opt" in
-      -f|--force)
-        opt_force=" -f "
-        ;;
-      -h|--help)
-        usage_containers
-        ;;
-      -v|--volumes)
-        opt_volumes=" -v "
-        ;;
+      if [ $delete = true ]; then
+        echo "Deleting ${image} images (all tags)"
+        docker rmi ${opt_force} ${image}
+      fi
+    done
+    ;;
+  containers)
+    shift
+    OPTS="$(get_options $@)"
+    IMAGES="$(get_args $@)"
+    for opt in $OPTS; do
+      case "$opt" in
+        -f|--force)
+          opt_force=" -f "
+          ;;
+        -h|--help)
+          usage_containers
+          ;;
+        -v|--volumes)
+          opt_volumes=" -v "
+          ;;
       esac
-  done
-  if [ -z "${IMAGES// }" ]; then
-    usage_containers
-  fi
-  for image in $IMAGES; do
-    IMAGE_NAME="${image%%:*}"
-    # Check if $image contains :
-    if [ "${image##*:*}" ]; then
-      IMAGE_TAG="latest"
-    else
-      IMAGE_TAG="${image#*:}"
+    done
+    if [ -z "${IMAGES// }" ]; then
+      usage_containers
     fi
-    CONTAINERS=`get_containers "$IMAGE_NAME:$IMAGE_TAG"`
-    if [ "$CONTAINERS" ]; then
-      echo "Deleting containers of $IMAGE_NAME:$IMAGE_TAG"
-      docker rm ${opt_force} ${opt_volumes} ${CONTAINERS}
-    else
-      echo "There are no containers to delete for $IMAGE_NAME:$IMAGE_TAG"
-    fi
-  done
-  exit 0
-elif [ "$1" = "repositories" ]; then
-  shift
-  OPTS="$(get_options $@)"
-  REPOS="$(get_args $@)"
-  for opt in $OPTS; do
-    case "$opt" in
-      -f|--force)
-        opt_force=" -f "
-        ;;
-      -h|--help)
-        usage_repositories
-        ;;
+    for image in $IMAGES; do
+      IMAGE_NAME="${image%%:*}"
+      # Check if $image contains :
+      if [ "${image##*:*}" ]; then
+        IMAGE_TAG="latest"
+      else
+        IMAGE_TAG="${image#*:}"
+      fi
+      CONTAINERS=`get_containers "$IMAGE_NAME:$IMAGE_TAG"`
+      if [ "$CONTAINERS" ]; then
+        echo "Deleting containers of $IMAGE_NAME:$IMAGE_TAG"
+        docker rm ${opt_force} ${opt_volumes} ${CONTAINERS}
+      else
+        echo "There are no containers to delete for $IMAGE_NAME:$IMAGE_TAG"
+      fi
+    done
+    ;;
+  repositories)
+    shift
+    OPTS="$(get_options $@)"
+    REPOS="$(get_args $@)"
+    for opt in $OPTS; do
+      case "$opt" in
+        -f|--force)
+          opt_force=" -f "
+          ;;
+        -h|--help)
+          usage_repositories
+          ;;
       esac
-  done
+    done
 
-  if [ -z "${REPOS// }" ]; then
-    usage_repositories
-  fi
-  for repo in $REPOS; do
-    IMAGES=$(docker images \
-                | sed 's/  */ /g' \
-                | grep "^$repo\/[^ ]* " \
-                | cut -d' ' -f 1-2 --output-delimiter=':')
-    if [ "${IMAGES}" ]; then
-      echo "Deleting all images from $repo/"
-      docker rmi ${opt_force} ${IMAGES}
-    else
-      echo "There are no images to delete for $repo/"
+    if [ -z "${REPOS// }" ]; then
+      usage_repositories
     fi
-  done
-  exit 0
-elif [ "$1" = "-v" ] || [ "$1" = "--verion" ]; then
-  show_version
-else
-  usage
-fi
+    for repo in $REPOS; do
+      IMAGES=$(docker images \
+                  | sed 's/  */ /g' \
+                  | grep "^$repo\/[^ ]* " \
+                  | cut -d' ' -f 1-2 --output-delimiter=':')
+      if [ "${IMAGES}" ]; then
+        echo "Deleting all images from $repo/"
+        docker rmi ${opt_force} ${IMAGES}
+      else
+        echo "There are no images to delete for $repo/"
+      fi
+    done
+    ;;
+  -v|--verion)
+    show_version
+    ;;
+  -h|--help|'')
+    usage
+    ;;
+  *)
+    echo "Wrong command."
+    usage
+    ;;
+esac
