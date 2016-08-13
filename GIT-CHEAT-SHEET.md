@@ -56,3 +56,19 @@ Your HEAD is not in fast-forward with your `b` remote branch. You got two choice
 
 1. `git pull --rebase origin b`
 2. `git fetch && git rebase origin b`
+
+## Tips and Tricks
+
+### Checkout last branch
+
+`
+git checkout -
+`
+
+### Diff
+
+Diff by word `git diff --word-diff`
+
+Diff by char `git diff --word-diff-regex=.`
+
+Ignore space change `git diff --ignore-space-change`
