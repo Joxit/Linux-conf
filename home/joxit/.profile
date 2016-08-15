@@ -26,7 +26,7 @@ fi
 # JDK 7
 # export PATH=$PATH:/usr/share/jdk/jdk7/bin
 # JDK 8
-export PATH=/usr/share/jdk/jdk7/bin:$PATH
+export PATH=/usr/share/jdk/jdk8/bin:$PATH
 
-export JAVA_HOME=/usr/share/jdk/jdk7/
-export STUDIO_JDK=/usr/share/jdk/jdk7/
+export JAVA_HOME=/usr/share/jdk/jdk8/
+export STUDIO_JDK=/usr/share/jdk/jdk8/
