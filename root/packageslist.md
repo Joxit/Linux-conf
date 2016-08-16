@@ -88,6 +88,7 @@ myspell-fr # French dictionary for myspell
 gnuplot # Command-line driven interactive plotting program
 terminator # multiple GNOME terminals in one window
 moreutils # For some utils commands like sponge for read and write in the same file (see https://packages.debian.org/sid/moreutils)
+figlet  # Generates text banners in ASCII
 ```
 
 ## Media
