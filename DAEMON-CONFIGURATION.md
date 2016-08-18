@@ -23,3 +23,18 @@ Environment=HTTP_PROXY=http://proxy.example.com:80/
 $ sudo systemctl restart docker
 ```
 
+## OpenVPN Configuration
+
+Default OpenVPN configuration file : `/etc/default/openvpn`
+
+Uncomment
+
+### Run VPN at startup
+
+Uncomment in your default OpenVPN configuration file the line
+
+```
+#AUTOSTART="all"
+```
+
+Add your vpn files in `/etc/openvpn`. Your conf should have the extension `.conf`.
