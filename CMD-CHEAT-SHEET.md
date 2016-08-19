@@ -59,3 +59,10 @@ du -sk FILE # total size, in kilo-bytes, calculate directories
 ```sh
 curl http://wttr.in/moon
 ```
+## OS information
+
+Os version : `cat /etc/os-release`
+
+Debian version : `cat /etc/debian_version`
+
+Kernel version : `uname -a`
