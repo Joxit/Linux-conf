@@ -36,25 +36,25 @@ Add your vpn files in `/etc/openvpn`. Your conf should have the extension `.conf
 
 ## Network Configuration
 
-For debian like OS, see files in `/etc/network/` and for CentOS, see files in `/etc/sysconfig/network-scripts/`.
+For **Debian** like OS, see files in `/etc/network/` and for **CentOS**, see files in `/etc/sysconfig/network-scripts/`.
+Be carefull, for **CentOS**, the interface name should be in the name of the file.
 
 ### Auto up of interfaces (with DHCP)
 
 You will need to change `{interface}` with your real interface name (eg eth0, wlan0...).
 
-To up your interface `{interface}` on a Debian like OS, add theses lines in `/etc/network/interfaces`
+To up your interface `{interface}` on a **Debian** like OS, add theses lines in `/etc/network/interfaces`
 
     allow-hotplug {interface}
     auto {interface}
     iface {interface} inet dhcp
 
-To up your interface `{interface}` on a CentOS like OS, add theses lines in`/etc/sysconfig/network-scripts/ifcfg-{interface}`.
+To up your interface `{interface}` on a **CentOS** like OS, add theses lines in`/etc/sysconfig/network-scripts/ifcfg-{interface}`.
 
     DEVICE={interface}
     IPV6INIT=yes
     BOOTPROTO=dhcp
     ONBOOT=yes
-    TYPE=Ethernet
     DEFROUTE=yes
     PEERDNS=yes
     PEERROUTES=yes
@@ -66,3 +66,19 @@ To up your interface `{interface}` on a CentOS like OS, add theses lines in`/etc
     IPV6_FAILURE_FATAL=no
     NAME="System {interface}"
     NOZEROCONF=1
+
+### Auto up route for an interfaces
+
+Here we assume that the gateway for your network is 10.0.0.1 and the subnet of the other network is 192.168.1.0/24.
+
+To up your interface `{interface}` on a **Debian** like OS, add theses lines in `/etc/network/interfaces`
+
+    allow-hotplug {interface}
+    auto {interface}
+    iface {interface} inet dhcp
+      post-up route add -net 192.168.1.0/24 gw 10.0.0.1 dev eth1
+
+To up your interface `{interface}` on a **CentOS** like OS, add theses lines in`/etc/sysconfig/network-scripts/route-{interface}`.
+
+    192.168.1.0/24 via 10.0.0.1 dev {interface}
+    default via 10.0.0.1 dev {interface}
