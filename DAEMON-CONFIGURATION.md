@@ -24,8 +24,6 @@ Flush changes, check and restart:
 
 Default OpenVPN configuration file : `/etc/default/openvpn`
 
-Uncomment
-
 ### Run VPN at startup
 
 Uncomment in your default OpenVPN configuration file the line
