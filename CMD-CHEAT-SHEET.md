@@ -24,16 +24,18 @@ Managing services :
 
 ```sh
 service NAME restart|start|stop|status
-# or 
+# or
 systemctl restart|start|stop|status NAME
 ```
 
 Update start :
+
 ```sh
 update-rc.d NAME defaults|disable|enable
 # or
 systemctl disable|enable|reenable NAME
 ```
+
 Services conf directories :
 `/etc/default/` and `/etc/systemd/` (see `system/multi-user.target.wants/`)
 
@@ -56,9 +58,11 @@ du -sk FILE # total size, in kilo-bytes, calculate directories
 ```
 
 ## Weather
+
 ```sh
 curl http://wttr.in/moon
 ```
+
 ## OS information
 
 Os version : `cat /etc/os-release`
@@ -66,3 +70,9 @@ Os version : `cat /etc/os-release`
 Debian version : `cat /etc/debian_version`
 
 Kernel version : `uname -a`
+
+## Markdown to pdf
+
+```sh
+pandoc -s input.md --latex-engine=xelatex -f markdown_github  -V geometry:margin=1in -o output.pdf
+```
