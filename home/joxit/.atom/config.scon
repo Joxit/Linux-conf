@@ -9,6 +9,10 @@
       indent_size: 2
     json:
       indent_size: 2
+    markdown:
+      beautify_on_save: true
+      commonmark: true
+      default_beautifier: "Remark"
     riot:
       indent_size: 2
     rust:
