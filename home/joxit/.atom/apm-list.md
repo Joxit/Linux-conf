@@ -8,9 +8,15 @@
 
 ## Syntax highlight
 
+`apm install language-docker` # Atom Syntax highlight for Docker
+
+`apm install language-markdown` # Atom Syntax highlight for Markdown
+
 `apm install language-riot-tag` # Atom Syntax highlight for riot
 
-`apm install language-rust` # Atom Syntax highlight for Rust 
+`apm install language-rust` # Atom Syntax highlight for Rust
+
+`apm install language-scala` # Atom Syntax highlight for Scala 
 
 ## Theme
 
