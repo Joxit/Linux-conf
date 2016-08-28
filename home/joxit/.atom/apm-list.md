@@ -16,8 +16,16 @@
 
 `apm install language-rust` # Atom Syntax highlight for Rust
 
-`apm install language-scala` # Atom Syntax highlight for Scala 
+`apm install language-scala` # Atom Syntax highlight for Scala
 
 ## Theme
 
 `apm install gtk-dark-theme`
+
+## Miscellaneous
+
+`apm install minimap` # A preview of the full sources code
+
+`apm install Remote-FTP` # Browsing remote FTP/FTPS/SFTP
+
+`apm install split-diff` # Split pane diff tool
