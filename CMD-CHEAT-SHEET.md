@@ -76,3 +76,9 @@ Kernel version : `uname -a`
 ```sh
 pandoc -s input.md --latex-engine=xelatex -f markdown_github  -V geometry:margin=1in -o output.pdf
 ```
+
+## SVG converter
+
+```sh
+rsvg-convert -a -w [size] -f svg input.svg -o output.svg
+```

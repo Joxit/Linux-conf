@@ -81,6 +81,7 @@ Via cargo :
     terminator # multiple GNOME terminals in one window
     moreutils # For some utils commands like sponge for read and write in the same file (see https://packages.debian.org/sid/moreutils)
     figlet  # Generates text banners in ASCII
+    librsvg2-bin # Command-line and graphical viewers for SVG files (rsvg-convert).
 
 ## Media
 
