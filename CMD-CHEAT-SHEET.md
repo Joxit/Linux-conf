@@ -82,3 +82,9 @@ pandoc -s input.md --latex-engine=xelatex -f markdown_github  -V geometry:margin
 ```sh
 rsvg-convert -a -w [size] -f svg input.svg -o output.svg
 ```
+
+## Write to file over ssh
+
+```sh
+cat file | ssh login@host 'tee /path/to/write' >/dev/null
+```
