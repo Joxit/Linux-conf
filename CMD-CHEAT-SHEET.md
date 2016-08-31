@@ -88,3 +88,25 @@ rsvg-convert -a -w [size] -f svg input.svg -o output.svg
 ```sh
 cat file | ssh login@host 'tee /path/to/write' >/dev/null
 ```
+
+## Cheat-sheet on tr
+
+### Remove newline of a file
+
+```sh
+cat file | tr '\n' ' '
+```
+
+### To lower/upper-case
+
+To upper case example:
+
+```sh
+cat file | tr '[:lower:]' '[:upper:]'
+```
+
+To lower case example:
+
+```sh
+cat file | tr '[:upper:]' '[:lower:]'
+```
