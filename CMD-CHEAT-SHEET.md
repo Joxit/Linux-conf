@@ -83,10 +83,46 @@ pandoc -s input.md --latex-engine=xelatex -f markdown_github  -V geometry:margin
 rsvg-convert -a -w [size] -f svg input.svg -o output.svg
 ```
 
-## Write to file over ssh
+## Reads and writes data across network connections
+
+### Netcat as server
+
+You can use this command for communicate over TCP with an host.
 
 ```sh
-cat file | ssh login@host 'tee /path/to/write' >/dev/null
+nc -l -p port
+```
+
+### Netcat as client
+
+nc is similar to telnet.
+
+```sh
+nc host port
+```
+
+Create an HTTP request: `GET /index.html HTTP/1.0`
+
+### Write to file over ssh
+
+```sh
+cat /file/to/read | ssh login@host 'tee /file/to/write' >/dev/null
+```
+
+### Write to file over nc
+
+This can be an alternative to ssh/scp (without login/password).
+
+On the remote server use :
+
+```sh
+nc -l p port > /file/to/write
+```
+
+On the current computer :
+
+```sh
+nc -c 'cat /file/to/read' host port
 ```
 
 ## Cheat-sheet on tr
