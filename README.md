@@ -69,6 +69,33 @@ docker-clean containers image1 image2
 docker-clean repositories namespace
 ```
 
+### sort-file
+
+Sort your files by date (useful for images or documents).
+Run the script in your folder :
+
+    images
+    ├── DSC_0000.JPG (created in 2016 08)
+    ├── DSC_0001.JPG (created in 2016 08)
+    ├── DSC_0002.JPG (created in 2016 08)
+    ├── DSC_0003.JPG (created in 2016 08)
+    ├── DSC_0004.JPG (created in 2016 09)
+    ├── DSC_0005.JPG (created in 2016 09)
+    └── DSC_0006.JPG (created in 2016 09)
+
+The result will be :
+
+    images
+    ├── 2016.08
+    │   ├── DSC_0000.JPG
+    │   ├── DSC_0001.JPG
+    │   ├── DSC_0002.JPG
+    │   └── DSC_0003.JPG
+    └── 2016.09
+        ├── DSC_0004.JPG
+        ├── DSC_0005.JPG
+        └── DSC_0006.JPG
+
 ## Gedit modules (GTKSourceView)
 
 In /home/joxit/.local/share/gtksourceview-3.0/language-specs folder, there are my modules for gedit highlight.
