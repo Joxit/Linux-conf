@@ -30,3 +30,6 @@ export PATH=/usr/share/jdk/jdk8/bin:$PATH
 
 export JAVA_HOME=/usr/share/jdk/jdk8/
 export STUDIO_JDK=/usr/share/jdk/jdk8/
+
+# Cargo for rust-lang
+export PATH="$HOME/.cargo/bin:$PATH"

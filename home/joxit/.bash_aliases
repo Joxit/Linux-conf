@@ -16,7 +16,3 @@ alias cpuinfo='lscpu'
 
 # gui diff and merge tool
 alias diffk="meld"
-
-alias node='docker run $DOCKER_NODE_OPTS --rm -ti -v $(pwd):/usr/src/app -e USER=1000 joxit/node node'
-alias npm='docker run $DOCKER_NODE_OPTS --rm -ti -v $(pwd):/usr/src/app -e USER=1000 joxit/node npm'
-
