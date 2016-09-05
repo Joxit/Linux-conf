@@ -146,3 +146,23 @@ To lower case example:
 ```sh
 cat file | tr '[:upper:]' '[:lower:]'
 ```
+
+## Set file capabilities
+
+### Bind a socket to Internet domain privileged ports
+
+```sh
+setcap "cap_net_bind_service=+ep" /path/to/executable
+```
+
+### Use RAW and PACKET sockets
+
+```sh
+setcap "cap_net_raw+ep" /usr/bin/iftop
+```
+
+### Perform various network-related operations
+
+```sh
+ setcap "cap_net_admin+ep" /path/to/executable
+```
