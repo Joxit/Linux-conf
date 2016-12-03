@@ -16,3 +16,7 @@ alias cpuinfo='lscpu'
 
 # gui diff and merge tool
 alias diffk="meld"
+
+if [ -f ~/.bash_aliases.local ]; then
+    . ~/.bash_aliases.local
+fi
