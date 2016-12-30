@@ -4,9 +4,11 @@
 
 `apm install atom-beautify` # Beautify many languages
 
-`apm install rust-fmt` # Use cargo fmt to format rust code
+`apm install rustfmt` # Use cargo fmt to format rust code
 
 ## Syntax highlight
+
+`apm install language-carto` # Atom Syntax highlight for Carto language
 
 `apm install language-docker` # Atom Syntax highlight for Docker
 
@@ -24,8 +26,10 @@
 
 ## Miscellaneous
 
-`apm install minimap` # A preview of the full sources code
+`apm install minimap minimap-bookmarks minimap-cursorline minimap-find-and-replace minimap-git-diff minimap-highlight-selected minimap-selection` # A preview of the full sources code
 
 `apm install Remote-FTP` # Browsing remote FTP/FTPS/SFTP
 
 `apm install split-diff` # Split pane diff tool
+
+`apm install `
