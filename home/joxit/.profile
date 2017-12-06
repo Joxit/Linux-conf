@@ -21,15 +21,9 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-# JDK 6
-# export PATH=$PATH:/usr/share/jdk/jdk6/bin
-# JDK 7
-# export PATH=$PATH:/usr/share/jdk/jdk7/bin
-# JDK 8
-export PATH=/usr/share/jdk/jdk8/bin:$PATH
-
-export JAVA_HOME=/usr/share/jdk/jdk8/
-export STUDIO_JDK=/usr/share/jdk/jdk8/
-
 # Cargo for rust-lang
 export PATH="$HOME/.cargo/bin:$PATH"
+
+if [ -f ~/.profile.local ]; then
+    . ~/.profile.local
+fi
