@@ -1,0 +1,43 @@
+#!/bin/bash
+set -ex
+if [ ! -f "$1" ]; then
+  echo "$1 is not a file"
+  exit 1
+fi
+if [ -z "$2" ]; then
+  echo "please chose an output"
+  exit 1
+fi
+export LANG=en-gb
+
+MKV="$1"
+OUTPUT="$2"
+
+NB_AUDIO="$(mkvinfo -G $MKV | grep -c "Track type: audio")"
+NB_VIDEO="$(mkvinfo -G $MKV | grep -c "Track type: video")"
+NB_SUBTITLES="$(mkvinfo -G $MKV | grep -c "Track type: subtitles")"
+HEIGHT="$(mkvinfo -G $MKV | grep "Pixel height:" | grep -oE "[0-9]+$" )"
+
+echo "Your MKV contains $NB_VIDEO video; $NB_AUDIO audio; $NB_SUBTITLES subtitles"
+echo "The video is in ${HEIGHT}p"
+TMP="$(mktemp)"
+
+set -x
+echo "Create mkv audio and video"
+HandBrakeCLI \
+  -i $MKV \
+  --encoder x264 \
+  --two-pass \
+  --turbo \
+  --decomb \
+  --loose-anamorphic \
+  --rate 23.976 \
+  --pfr \
+  --encopts "ref=6:subq=7:trellis=0:bframes=3:b-adapt=2:direct=auto:me=umh:merange=16:analyse=all:open-gop=0:rc-lookahead=50:level=4.1:no-fast-pskip=1:no-mixed-refs=0:no-weightb=0:no-mbtree=0:partitions=all" \
+  --all-audio \
+  -o $TMP
+
+echo "Retrieve subtitles"
+mkvmerge -o $OUTPUT -S -B $TMP -D -A $MKV
+
+rm $TMP
