@@ -1,5 +1,4 @@
 #!/bin/bash
-set -ex
 if [ ! -f "$1" ]; then
   echo "$1 is not a file"
   exit 1
@@ -13,16 +12,17 @@ export LANG=en-gb
 MKV="$1"
 OUTPUT="$2"
 
-NB_AUDIO="$(mkvinfo -G $MKV | grep -c "Track type: audio")"
-NB_VIDEO="$(mkvinfo -G $MKV | grep -c "Track type: video")"
-NB_SUBTITLES="$(mkvinfo -G $MKV | grep -c "Track type: subtitles")"
-HEIGHT="$(mkvinfo -G $MKV | grep "Pixel height:" | grep -oE "[0-9]+$" )"
-
+NB_AUDIO="$(mediainfo "$MKV" | grep -c "^Audio$")"
+NB_VIDEO="$(mediainfo "$MKV" | grep -c "^Video$")"
+NB_SUBTITLES="$(mediainfo "$MKV" | grep -c "^Text$")"
+HEIGHT="$(mediainfo "$MKV" | grep -E "Height\s+:" | grep -oE "[0-9]+" )"
+MODIFICATION_DATE="$(date --date @"$(stat "$MKV" --format="%Y")" "+%y%m%d%H%M.%S")"
 echo "Your MKV contains $NB_VIDEO video; $NB_AUDIO audio; $NB_SUBTITLES subtitles"
 echo "The video is in ${HEIGHT}p"
+echo "Modification date is $MODIFICATION_DATE"
 TMP="$(mktemp)"
 
-set -x
+set -ex
 echo "Create mkv audio and video"
 HandBrakeCLI \
   -i $MKV \
@@ -38,6 +38,8 @@ HandBrakeCLI \
   -o $TMP
 
 echo "Retrieve subtitles"
-mkvmerge -o $OUTPUT -S -B $TMP -D -A $MKV
+mkvmerge -o "$OUTPUT" -S -B $TMP -D -A "$MKV"
+
+touch -t "$MODIFICATION_DATE" "$OUTPUT"
 
 rm $TMP
