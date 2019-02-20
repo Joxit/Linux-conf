@@ -1,16 +1,51 @@
 #!/bin/bash
-if [ ! -f "$1" ]; then
-  echo "$1 is not a file"
-  exit 1
-fi
-if [ -z "$2" ]; then
-  echo "please chose an output"
-  exit 1
-fi
+MKV=""
+OUTPUT=""
+
+while [ "$1" != "" ]; do
+  case "$1" in
+    -x265|--x265)
+      ENCODER="x265"
+      ;;
+    --maxHeight|--max-height)
+      shift
+      MAX_HEIGHT="$1"
+      ;;
+    -720p|-hd|--720p|--hd)
+      MAX_WIDTH="1280"
+      ;;
+    -*)
+      echo "$0 : $1 is a invalid option"
+      exit 1
+      ;;
+    *)
+      if [ -z "$MKV" ]; then
+        if [ ! -f "$1" ]; then
+          echo "$1 is not a file"
+          exit 1
+        fi
+        MKV="$1"
+      elif [ -z "$OUTPUT" ]; then
+        OUTPUT="$1"
+      else
+        echo "Too many arguments"
+        exit 1
+      fi
+      ;;
+  esac
+  shift
+done
+
 export LANG=en-gb
 
-MKV="$1"
-OUTPUT="$2"
+if [ -z "$MKV" ]; then
+  echo "Please select a source file!"
+  exit 1
+fi
+if [ -z "$OUTPUT" ]; then
+  echo "Please chose an output!"
+  exit 1
+fi
 
 if [ "$ENCODER" = "x265" ]; then
   ENCODER_OPTS="wpp:ctu=64:min-cu-size=8:max-tu-size=32:tu-intra-depth=1:tu-inter-depth=1:me=1:subme=2:merange=57:no-rect:no-amp:max-merge=2:temporal-mvp:no-early-skip:rdpenalty=0:no-tskip:no-tskip-fast:strong-intra-smoothing:no-lossless:no-cu-lossless:no-constrained-intra:no-fast-intra:open-gop:no-temporal-layers:interlace=0:keyint=250:min-keyint=23:scenecut=40:rc-lookahead=20:lookahead-slices=0:bframes=4:bframe-bias=0:b-adapt=2:ref=3:limit-refs=0:no-limit-modes:weightp:no-weightb:aq-mode=1:qg-size=32:aq-strength=1.00:cbqpoffs=0:crqpoffs=0:rd=3:psy-rd=0.30:rdoq-level=0:psy-rdoq=0.00:signhide:deblock:sao:no-sao-non-deblock:b-pyramid:cutree:no-intra-refresh:rc=crf:crf=25.0:qcomp=0.60:qpmin=0:qpmax=51:qpstep=4:ipratio=1.40:pbratio=1.30"
@@ -22,6 +57,11 @@ fi
 if [ -n "$MAX_HEIGHT" ]; then
   HEIGHT_OPTS="--maxHeight $MAX_HEIGHT"
 fi
+
+if [ -n "$MAX_WIDTH" ]; then
+  HEIGHT_OPTS="--maxWidth $MAX_WIDTH"
+fi
+
 
 NB_AUDIO="$(mediainfo "$MKV" | grep -c "^Audio$")"
 NB_VIDEO="$(mediainfo "$MKV" | grep -c "^Video$")"
