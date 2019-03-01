@@ -43,8 +43,13 @@ if [ -z "$MKV" ]; then
   exit 1
 fi
 if [ -z "$OUTPUT" ]; then
-  echo "Please chose an output!"
-  exit 1
+  FILENAME="${MKV%%.*}"
+  EXT="${MKV##*.}"
+  OUTPUT="$FILENAME.mkv"
+  if [ "${#EXT}" != "3" ] || [ "$MKV" = "$OUTPUT" ]; then
+    echo "Please chose an output!"
+    exit 1
+  fi
 fi
 
 if [ "$ENCODER" = "x265" ]; then
