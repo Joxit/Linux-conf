@@ -43,9 +43,14 @@ if [ -z "$MKV" ]; then
   exit 1
 fi
 if [ -z "$OUTPUT" ]; then
-  FILENAME="${MKV%%.*}"
+  FILENAME="$(basename "${MKV}")"
+  FILENAME="${FILENAME%%.*}"
+  DIRNAME="$(dirname $MKV)"
+  if [ -z "$(echo $DIRNAME | grep -o '/$')" ] && [ -n "$DIRNAME" ]; then
+    DIRNAME="${DIRNAME}/"
+  fi
   EXT="${MKV##*.}"
-  OUTPUT="$FILENAME.mkv"
+  OUTPUT="$DIRNAME$FILENAME.mkv"
   if [ "${#EXT}" != "3" ] || [ "$MKV" = "$OUTPUT" ]; then
     echo "Please chose an output!"
     exit 1
@@ -72,17 +77,19 @@ NB_AUDIO="$(mediainfo "$MKV" | grep -c "^Audio$")"
 NB_VIDEO="$(mediainfo "$MKV" | grep -c "^Video$")"
 NB_SUBTITLES="$(mediainfo "$MKV" | grep -c "^Text$")"
 HEIGHT="$(mediainfo "$MKV" | grep -E "Height\s+:" | grep -oE "[0-9]+" )"
+WIDTH="$(mediainfo "$MKV" | grep -E "Width\s+:" | grep -oE "[0-9]+" )"
 MODIFICATION_DATE="$(date --date @"$(stat "$MKV" --format="%Y")" "+%y%m%d%H%M.%S")"
 echo "Your MKV contains $NB_VIDEO video; $NB_AUDIO audio; $NB_SUBTITLES subtitles"
-echo "The video is in ${HEIGHT}p"
+echo "The video is in ${WIDTH}x${HEIGHT}"
 echo "Modification date is $MODIFICATION_DATE"
-echo "Options are encoder: $ENCODER, max height: $MAX_HEIGHT"
+echo "Options are encoder: $ENCODER, max height: $MAX_HEIGHT, max width: $MAX_WIDTH"
 TMP="$(mktemp)"
+echo "Input file is $MKV, tmp file is $TMP and final encoded file will be $OUTPUT"
 
 echo "Create mkv audio and video"
 set -ex
 HandBrakeCLI \
-  -i $MKV \
+  -i "$MKV" \
   --encoder "$ENCODER" \
   --two-pass \
   --turbo \
@@ -93,11 +100,11 @@ HandBrakeCLI \
   --encopts "$ENCODER_OPTS" \
   --all-audio \
    $HEIGHT_OPTS \
-  -o $TMP
+  -o "$TMP"
 
 echo "Retrieve subtitles"
-mkvmerge -o "$OUTPUT" -S -B $TMP -D -A "$MKV"
+mkvmerge -o "$OUTPUT" -S -B "$TMP" -D -A "$MKV"
 
 touch -t "$MODIFICATION_DATE" "$OUTPUT"
 
-rm $TMP
+rm "$TMP"
