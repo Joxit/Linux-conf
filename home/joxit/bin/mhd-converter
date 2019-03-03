@@ -44,17 +44,22 @@ if [ -z "$MKV" ]; then
 fi
 if [ -z "$OUTPUT" ]; then
   FILENAME="$(basename "${MKV}")"
-  FILENAME="${FILENAME%%.*}"
+  FILENAME="${FILENAME%.*}"
   DIRNAME="$(dirname $MKV)"
   if [ -z "$(echo $DIRNAME | grep -o '/$')" ] && [ -n "$DIRNAME" ]; then
     DIRNAME="${DIRNAME}/"
   fi
   EXT="${MKV##*.}"
   OUTPUT="$DIRNAME$FILENAME.mkv"
-  if [ "${#EXT}" != "3" ] || [ "$MKV" = "$OUTPUT" ]; then
+  if [ "${#EXT}" != "3" ] || [ "$(realpath $MKV)" = "$(realpath $OUTPUT)" ]; then
     echo "Please chose an output!"
     exit 1
   fi
+fi
+
+if [ "$(realpath $MKV)" = "$(realpath $OUTPUT)" ]; then
+  echo "Your input and output must be defferents."
+  exit 1
 fi
 
 if [ "$ENCODER" = "x265" ]; then
