@@ -99,6 +99,7 @@ HandBrakeCLI \
   --two-pass \
   --turbo \
   --decomb \
+  --crop 0:0:0:0 \
   --loose-anamorphic \
   --rate 23.976 \
   --pfr \
