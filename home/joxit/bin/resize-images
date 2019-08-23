@@ -1,0 +1,34 @@
+#!/bin/bash
+#    Copyright (C) 2019 Joxit
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+for file in *; do
+  mkdir -p output
+  if [ -f "$file" ]; then
+    INFO=$(mediainfo $file)
+    if [ -z "$(echo $INFO | grep -io "Format *: *JPEG")" ]; then
+      continue;
+    fi
+    WIDTH="$(echo $INFO | grep -io "Width[^:]*[^p]*" | grep -o "[0-9]" | tr -d '\n')"
+    HEIGHT="$(echo $INFO | grep -io "Height[^:]*[^p]*" | grep -o "[0-9]" | tr -d '\n')"
+    if [ "$WIDTH" -gt 1500 ] || [ "$HEIGHT" -gt 1500 ]; then
+      echo "Processing $file"
+      convert -resize 1500 $file output/$file
+    else
+      cp -v $file output/$file
+    fi
+  fi
+done
