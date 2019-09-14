@@ -17,6 +17,12 @@
 
 MAX_SIZE="${1:-1500}"
 
+if [ "$MAX_SIZE" != "$(echo $MAX_SIZE | grep -o '[0-9]*')" ]; then
+  echo "You should pass a number as parameter !"
+  echo "Usage $0 1500"
+  exit 1
+fi
+
 for file in *; do
   mkdir -p output
   if [ -f "$file" ]; then
