@@ -34,10 +34,12 @@ for file in *; do
     WIDTH="$(echo $INFO | grep -io "Width[^:]*[^p]*" | grep -o "[0-9]" | tr -d '\n')"
     HEIGHT="$(echo $INFO | grep -io "Height[^:]*[^p]*" | grep -o "[0-9]" | tr -d '\n')"
     if [ "$WIDTH" -gt "$MAX_SIZE" ] || [ "$HEIGHT" -gt "$MAX_SIZE" ]; then
+      MODIFICATION_DATE="$(date --date @"$(stat "$file" --format="%Y")" "+%y%m%d%H%M.%S")"
       echo "Processing $file"
       convert -resize $MAX_SIZE $file output/$file
+      touch -t "$MODIFICATION_DATE" output/$file
     else
-      cp -v $file output/$file
+      cp -pv $file output/$file
     fi
   fi
 done
