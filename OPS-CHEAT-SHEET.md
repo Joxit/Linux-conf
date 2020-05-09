@@ -43,3 +43,11 @@ home	/dev/sda4	none	luks,retry=1
 /dev/mapper/home	/home	ext4 defaults 0 2
 ```
 3. Restart your computer
+
+## Add user to a group
+
+This is used for `sudo` and `docker` groups
+
+```
+usermod -aG $group $user
+```
