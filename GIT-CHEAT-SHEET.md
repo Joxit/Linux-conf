@@ -72,3 +72,9 @@ Diff by word `git diff --word-diff`
 Diff by char `git diff --word-diff-regex=.`
 
 Ignore space change `git diff --ignore-space-change`
+
+## Github
+
+Rebuild github pages via API.
+
+curl -X POST -H "Authorization: token $TOKEN" https://api.github.com/repos/$gh_user/$gh_project/pages/builds
