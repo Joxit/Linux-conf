@@ -4,7 +4,7 @@
 
 [alias]
        lol = log --graph --decorate --pretty=oneline --abbrev-commit
-       tree = log --graph --decorate --pretty=oneline --abbrev-commit --all --format='%C(auto)%h%d %f %C(yellow)(%Cblue%an%C(Yellow)) %C(cyan)%ai'
+       tree = log --graph --decorate --pretty=oneline --abbrev-commit --all --format='%C(auto)%h%d %s %C(yellow)(%Cblue%an%C(Yellow)) %C(cyan)%ai'
        branch-merged = "!f(){ for branch in `git branch -r --merged | grep -v HEAD | grep -v origin/master | grep -v origin/release` ; do git show --format=\"%C(yellow)%d %Cgreen%aN %C(cyan)%ar\" $branch | head -n 1 ; done }; f"
        s = status
        f = fetch

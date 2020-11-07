@@ -17,6 +17,8 @@ alias cpuinfo='lscpu'
 # gui diff and merge tool
 alias diffk="meld"
 
+alias ttfb='curl -o /dev/null -s  -w "Connect: %{time_connect} TTFB: %{time_starttransfer} Total time: %{time_total} \n"'
+
 if [ -f ~/.bash_aliases.local ]; then
     . ~/.bash_aliases.local
 fi
