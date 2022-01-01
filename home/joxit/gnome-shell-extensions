@@ -1,5 +1,6 @@
 https://extensions.gnome.org/extension/307/dash-to-dock/
 https://extensions.gnome.org/extension/36/lock-keys/
 https://extensions.gnome.org/extension/120/system-monitor/
-https://extensions.gnome.org/extension/15/alternatetab/
 https://extensions.gnome.org/extension/6/applications-menu/
+
+Alternate tab is obsolete, see the [blog post](https://blogs.gnome.org/fmuellner/2018/10/11/the-future-of-alternatetab-and-why-you-need-not-worry/). You need to change the shortcuts `Switch Windows` to `ALT + TAB`.
