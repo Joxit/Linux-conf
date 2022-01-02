@@ -83,6 +83,7 @@ Via cargo :
     figlet  # Generates text banners in ASCII
     librsvg2-bin # Command-line and graphical viewers for SVG files (rsvg-convert).
     ncdu # ncurses disk usage viewer
+    httpie
 
 ## Media
 
@@ -93,3 +94,13 @@ Via cargo :
 ## Foramtter
 
     jq # JSON processor
+
+## DEB Downalod
+
+[IntelliJ IDEA](https://www.jetbrains.com/idea/download/#section=linux)
+[Atom](https://atom.io/)
+[VSCode](https://code.visualstudio.com/)
+[Slack](https://slack.com/intl/en-gb/downloads/linux)
+[Mattermost](https://docs.mattermost.com/install/desktop.html?src=dl#linux)
+[Zoom](https://zoom.us/download#client_4meeting)
+[nvm](https://github.com/nvm-sh/nvm#install--update-script)
