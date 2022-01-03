@@ -104,3 +104,17 @@ Via cargo :
 [Mattermost](https://docs.mattermost.com/install/desktop.html?src=dl#linux)
 [Zoom](https://zoom.us/download#client_4meeting)
 [nvm](https://github.com/nvm-sh/nvm#install--update-script)
+
+## Python
+
+    pip install python-openstackclient
+
+## Drivers
+
+    firmware-linux-nonfree firmware-linux-free firmware-misc-nonfree
+    firmware-intelwimax # Intel wifi
+    firmware-realtek # realtek wifi & bluetooth
+    intel-microcode # intel CPU
+    amd64-microcode # AMD CPU
+    nvidia-detect # detect which nvidia driver to install
+    bumblebee-nvidia primus # NVIDIA hybrid graphics https://wiki.debian.org/NVIDIA%20Optimus
