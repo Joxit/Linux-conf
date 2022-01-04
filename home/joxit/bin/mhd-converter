@@ -1,6 +1,7 @@
 #!/bin/bash
 MKV=""
 OUTPUT=""
+CROP="--crop 0:0:0:0"
 
 while [ "$1" != "" ]; do
   case "$1" in
@@ -13,6 +14,9 @@ while [ "$1" != "" ]; do
       ;;
     -720p|-hd|--720p|--hd)
       MAX_WIDTH="1280"
+      ;;
+    --crop)
+      CROP=""
       ;;
     -*)
       echo "$0 : $1 is a invalid option"
@@ -99,7 +103,7 @@ HandBrakeCLI \
   --two-pass \
   --turbo \
   --decomb \
-  --crop 0:0:0:0 \
+  $CROP \
   --loose-anamorphic \
   --rate 23.976 \
   --pfr \
