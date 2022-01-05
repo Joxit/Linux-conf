@@ -1,5 +1,0 @@
-#!/bin/sh
-# Activate eclipse Luna Dark Theme with Gnome3 Dark Theme (Debian Jessie)
-export SWT_GTK3=1
-# Launch eclipse
-~/Applications/eclipse/eclipse
