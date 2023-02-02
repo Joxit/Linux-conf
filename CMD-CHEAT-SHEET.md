@@ -166,3 +166,80 @@ setcap "cap_net_raw+ep" /usr/bin/iftop
 ```sh
  setcap "cap_net_admin+ep" /path/to/executable
 ```
+
+## Manage personal GPG keys
+
+### Increase expiration date
+
+List private keys first
+
+```sh
+gpg --list-secret-keys --keyid-format LONG
+```
+```
+/home/user/.gnupg/pubring.kbx
+------------------------------
+sec   rsa4096/0123456789ABCDEF 2019-01-19 [SC] [expires: 2023-02-17]
+      0123456789ABCDEF0123456789ABCDEF01234567
+uid                [ expires ] User <user@example.com>
+```
+
+Now you can edit your key
+```sh
+gpg --edit-key 0123456789ABCDEF
+```
+```
+gpg (GnuPG) 2.2.40; Copyright (C) 2022 g10 Code GmbH
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+sec  rsa4096/0123456789ABCDEF
+     created : 2019-01-19  expires : 2023-02-17  utilisation : SC  
+     confiance : ultime        validity : expires
+ssb  rsa4096/FEDCBA9876543210
+     created : 2019-01-19  expired : 2020-02-17  utilisation : E   
+[ expires ] (1). User <user@example.com>
+
+gpg>
+```
+
+This is a REPL, first edit the expiration date of the key
+```text
+gpg> expire
+ 
+Changing expiration time for the primary key.
+Please specify how long the key should be valid.
+        0 = key does not expire
+     <n>  = key expires in n days
+     <n>w = key expires in n weeks
+     <n>m = key expires in n months
+     <n>y = key expires in n years
+Key is valid for? (0) 2y
+Key expires at Tue 17 Feb 2025 07:37:07 CET
+Is this correct? (y/N) y
+
+gpg>
+```
+
+Now you can edit the subkey expiration date
+```
+gpg> key 1
+gpg> expire
+ 
+Changing expiration time for the primary key.
+Please specify how long the key should be valid.
+        0 = key does not expire
+     <n>  = key expires in n days
+     <n>w = key expires in n weeks
+     <n>m = key expires in n months
+     <n>y = key expires in n years
+Key is valid for? (0) 2y
+Key expires at Tue 17 Feb 2025 07:38:09 CET
+Is this correct? (y/N) y
+```
+
+Now you can save the new key
+
+```
+gpg> save
+```
