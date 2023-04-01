@@ -40,8 +40,6 @@ while [ "$1" != "" ]; do
   shift
 done
 
-export LANG=en-gb
-
 if [ -z "$MKV" ]; then
   echo "Please select a source file!"
   exit 1
@@ -82,11 +80,11 @@ if [ -n "$MAX_WIDTH" ]; then
 fi
 
 
-NB_AUDIO="$(mediainfo "$MKV" | grep -c "^Audio$")"
-NB_VIDEO="$(mediainfo "$MKV" | grep -c "^Video$")"
-NB_SUBTITLES="$(mediainfo "$MKV" | grep -c "^Text$")"
-HEIGHT="$(mediainfo "$MKV" | grep -E "Height\s+:" | grep -oE "[0-9]+" )"
-WIDTH="$(mediainfo "$MKV" | grep -E "Width\s+:" | grep -oE "[0-9]+" )"
+NB_AUDIO="$(mediainfo --Output=JSON "$MKV" | jq '.media.track | .[] | .["@type"] | select(. == "Audio")' | wc -l)"
+NB_VIDEO="$(mediainfo --Output=JSON "$MKV" | jq '.media.track | .[] | .["@type"] | select(. == "Video")' | wc -l)"
+NB_SUBTITLES="$(mediainfo --Output=JSON "$MKV" | jq '.media.track | .[] | .["@type"] | select(. == "Text")' | wc -l)"
+HEIGHT="$(mediainfo --Output=JSON "$MKV" | jq -r '.media.track | .[]  | select(.["@type"] == "Video") | .Height')"
+WIDTH="$(mediainfo --Output=JSON "$MKV" | jq -r '.media.track | .[]  | select(.["@type"] == "Video") | .Width')"
 MODIFICATION_DATE="$(date --date @"$(stat "$MKV" --format="%Y")" "+%y%m%d%H%M.%S")"
 echo "Your MKV contains $NB_VIDEO video; $NB_AUDIO audio; $NB_SUBTITLES subtitles"
 echo "The video is in ${WIDTH}x${HEIGHT}"
