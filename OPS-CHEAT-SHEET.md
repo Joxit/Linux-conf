@@ -51,3 +51,38 @@ This is used for `sudo` and `docker` groups
 ```
 usermod -aG $group $user
 ```
+
+## Booting from grub>
+
+Just in case grub shows you the console instead of execute the kernel. Here is how to fix it. 
+
+```
+# Invokes the pager, for paging long command outputs:
+grub> set pager=1
+# List all your hard drives and partitions and find your partition containing your /boot.
+grub> ls
+(hd0) (hd0,gpt2) (hd0,gpt1)
+grub> ls (hd0,gpt1)/
+boot/ ...
+```
+
+Now the part for executing a specified kernel.
+
+```
+grub> set root=(hd0,gpt1)
+# You should match the id of your partition with the name e.g gpt1 => sda1
+grub> linux /boot/vmlinuz-6.1.0-9-amd64 root=/dev/sda1
+# Take the same version for vmlinux and initrd !
+grub> initrd /boot/initrd.img-6.1.0-9-amd64
+grub> boot
+```
+
+Your OS should boot now but it's not finished! You must write all your changes to your boot sector of your hard drive.
+
+```
+# update-grub
+Generating grub configuration file ...
+# grub-install /dev/sda
+Installing for ...
+Installation finished. No error reported
+```
