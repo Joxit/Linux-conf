@@ -6,6 +6,7 @@ alias cd.='cd ..'
 alias mv='mv -i'
 alias cp='cp -i -p'
 alias ln='ln -i'
+alias scp='scp -p'
 
 # ls with long time sorted
 alias llt='ls -l --time-style=long -t'

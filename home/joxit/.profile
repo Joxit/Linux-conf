@@ -21,8 +21,10 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-# Cargo for rust-lang
-export PATH="$HOME/.cargo/bin:$PATH"
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
 
 if [ -f ~/.profile.local ]; then
     . ~/.profile.local
