@@ -95,10 +95,3 @@ The result will be :
         ├── DSC_0004.JPG
         ├── DSC_0005.JPG
         └── DSC_0006.JPG
-
-## Gedit modules (GTKSourceView)
-
-In /home/joxit/.local/share/gtksourceview-3.0/language-specs folder, there are my modules for gedit highlight.
-For now, only **Dockerfile** and **CartoCSS** highlight are available.
-
-You can add a link to your own ~/.local/share/gtksourceview-3.0/language-specs if you want my coloration style.
