@@ -98,7 +98,7 @@ set -ex
 HandBrakeCLI \
   -i "$MKV" \
   --encoder "$ENCODER" \
-  --two-pass \
+  --multi-pass \
   --turbo \
   --decomb \
   $CROP \
