@@ -80,3 +80,12 @@ To up your interface `{interface}` on a **CentOS** like OS, add theses lines in`
 
     192.168.1.0/24 via 10.0.0.1 dev {interface}
     default via 10.0.0.1 dev {interface}
+
+## Ignore lid switch on laptop
+
+Update the file `/etc/systemd/logind.conf`
+
+```
+[Login]
+HandleLidSwitch=ignore
+```

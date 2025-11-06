@@ -23,16 +23,12 @@ openssl rand -base64 LENGTH
 Managing services :
 
 ```sh
-service NAME restart|start|stop|status
-# or
 systemctl restart|start|stop|status NAME
 ```
 
 Update start :
 
 ```sh
-update-rc.d NAME defaults|disable|enable
-# or
 systemctl disable|enable|reenable NAME
 ```
 
@@ -123,6 +119,12 @@ On the current computer :
 
 ```sh
 nc -c 'cat /file/to/read' host port
+```
+
+### Check all opened ports
+
+```sh
+ss -lntu
 ```
 
 ## Cheat-sheet on tr

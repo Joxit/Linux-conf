@@ -1,0 +1,17 @@
+# Cargo list of utilites
+
+- `bat`: A cat(1) clone with syntax highlighting and Git integration. (https://github.com/sharkdp/bat)
+- `brush`: bash/POSIX-compatible shell implemented in Rust (https://github.com/reubeno/brush)
+- `dutree`: a tool to analyze file system usage written in Rust (https://github.com/nachoparker/dutree)
+- `Joxit/dns-server`: Block ads and malwares at DNS level with your private DNS Server (https://github.com/Joxit/dns-server)
+- `exa`: A modern replacement for ls (https://github.com/ogham/exa)
+- `fclones`: Efficient Duplicate File Finder (https://github.com/pkolaczk/fclones)
+- `fd-find`: A simple, fast and user-friendly alternative to 'find' (https://github.com/sharkdp/fd)
+- `fselect`: Find files with SQL-like queries (https://github.com/jhspetersson/fselect)
+- `hexyl`: A command-line hex viewer (https://github.com/sharkdp/hexyl)
+- `hyperfine`: A command-line benchmarking tool (https://github.com/sharkdp/hyperfine)
+- `kokai`: Conventional commits release note generator (https://github.com/Joxit/kokai)
+- `lsd`: A modern ls with a lot of pretty colors and awesome icons (https://github.com/lsd-rs/lsd)
+- `oxvg`: Rust alternative to SVGO and (eventually) InkScape (https://github.com/noahbald/oxvg)
+- `runtasktic`: Fantas(k)tic command-line for execution of regular long sequential or parallel tasks (https://github.com/Joxit/runtasktic)
+- `srgn`: A grep-like tool which understands source code syntax and allows for manipulation in addition to search (https://github.com/alexpovel/srgn)

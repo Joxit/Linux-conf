@@ -61,11 +61,6 @@ Via cargo :
     wireshark # network traffic analyzer
     gnome-system-monitor # process viewer and system resource monitor
 
-## Flash plugin for firefox
-
-    flashplugin-nonfree # or
-    browser-plugin-freshplayer-pepperflash
-
 ## LaTeX
 
     texlive
@@ -78,7 +73,7 @@ Via cargo :
 ## Miscellaneous
 
     gnuplot # Command-line driven interactive plotting program
-    terminator # multiple GNOME terminals in one window
+    tilix # multiple GNOME terminals in one window
     moreutils # For some utils commands like sponge for read and write in the same file (see https://packages.debian.org/sid/moreutils)
     figlet  # Generates text banners in ASCII
     librsvg2-bin # Command-line and graphical viewers for SVG files (rsvg-convert).
@@ -98,12 +93,12 @@ Via cargo :
 ## DEB Downalod
 
 [IntelliJ IDEA](https://www.jetbrains.com/idea/download/#section=linux)
-[Atom](https://atom.io/)
 [VSCode](https://code.visualstudio.com/)
 [Slack](https://slack.com/intl/en-gb/downloads/linux)
 [Mattermost](https://docs.mattermost.com/install/desktop.html?src=dl#linux)
 [Zoom](https://zoom.us/download#client_4meeting)
 [nvm](https://github.com/nvm-sh/nvm#install--update-script)
+[asdf](https://asdf-vm.com/guide/getting-started.html)
 
 ## Python
 
@@ -118,3 +113,14 @@ Via cargo :
     amd64-microcode # AMD CPU
     nvidia-detect # detect which nvidia driver to install
     bumblebee-nvidia primus # NVIDIA hybrid graphics https://wiki.debian.org/NVIDIA%20Optimus
+
+## Gnome extensions
+
+    gnome-shell-extension-dashtodock
+    gnome-shell-extension-system-monitor
+    gnome-shell-extension-apps-menu
+    gnome-shell-extension-caffeine
+
+Alternate tab is obsolete, see the [blog post](https://blogs.gnome.org/fmuellner/2018/10/11/the-future-of-alternatetab-and-why-you-need-not-worry/). You need to change the shortcuts `Switch Windows` to `ALT + TAB`.
+
+All extensions are also available on https://extensions.gnome.org/
