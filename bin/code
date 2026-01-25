@@ -1,0 +1,37 @@
+#!/bin/bash
+#    Copyright (C) 2026 Joxit
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+
+arg="${1%/}"
+file="$arg/$(basename $arg).code-workspace"
+
+if [ -d "$arg" ] && [ -f "$file" ]; then
+  echo "Workspace $arg found in directory $arg"
+  code_args="$file"
+elif [ -d "$HOME/$arg" ] && [ -f "$HOME/$file" ]; then
+  echo "Workspace $arg found in HOME's directory $arg"
+  code_args="$HOME/$file"
+elif [ -d "$HOME/.local/share/vscode" ] && [ -f "$HOME/.local/share/vscode/$arg.code-workspace" ]; then
+  echo "Workspace $arg found in Code's directory"
+  code_args="$HOME/.local/share/vscode/$arg.code-workspace"
+else
+  echo "Workspace not found"
+  code_args=$@
+fi
+
+echo "Will open $code_args"
+exec /usr/bin/code $code_args
