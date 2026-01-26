@@ -79,16 +79,20 @@ Via cargo :
     librsvg2-bin # Command-line and graphical viewers for SVG files (rsvg-convert).
     ncdu # ncurses disk usage viewer
     httpie
+    flameshot # Augmented screenshots
 
 ## Media
 
     mkvtoolnix-gui # Set of tools to work with Matroska files
     caffeine # Prevent screen lock during fullscreen app
+    handbrake-cli # Video transcoder
     kodi # Kodi Media Center
+    mediainfo # Retrieving metadata about audio or video files
 
 ## Foramtter
 
     jq # JSON processor
+    csvtool # CSV processor
 
 ## DEB Downalod
 
