@@ -1,0 +1,52 @@
+#!/bin/bash
+#    Copyright (C) 2026 Joxit
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+
+if [ -z "$2" ]; then
+  echo "Incorrect param number; $0 [IP|HOSTNAME] [DESTINATION PORT|CONTAINER]" >&2
+  exit 1
+fi
+
+DESTINATION="$1"
+DESTINATION_PORT="$2"
+
+if [ "$DESTINATION_PORT" -eq "$DESTINATION_PORT" ] 2> /dev/null; then
+  REMOTE_IPS=$(ssh $DESTINATION ip -json a s | jq -r '.[] | .addr_info | .[] | select(.family == "inet") | .local')
+  OPENED_ADDR=$(ssh $DESTINATION nmap -oG -  -p $DESTINATION_PORT $REMOTE_IPS | grep '/open/' | cut -d' ' -f 2)
+elif [ -n "$(echo $DESTINATION_PORT | cut -d':' -f 2)" ]; then
+  OPENED_ADDR="$(echo $DESTINATION_PORT | cut -d':' -f 1)"
+  DESTINATION_PORT="$(echo $DESTINATION_PORT | cut -d':' -f 2)"
+fi
+
+if [ -n "$(echo $OPENED_ADDR | grep -o [a-zA-Z])" ]; then
+  CONTAINER_NAME="$OPENED_ADDR"
+  OPENED_ADDR="$(ssh $DESTINATION "docker inspect $CONTAINER_NAME" | jq -r '.[] | .NetworkSettings | .Networks |  .[] | .IPAddress | select(length > 0)')"
+fi
+
+if [ -z "$OPENED_ADDR" ]; then
+  echo "No address listening on port $DESTINATION_PORT found" >&2
+  if [ -n "$CONTAINER_NAME" ]; then
+    echo "Could not find container $CONTAINER_NAME" >&2
+  else
+    echo "Searched addresses are $(echo $REMOTE_IPS | tr ' ' ';')" >&2
+  fi
+  exit 1
+fi
+
+echo -e "\e[1;35mConnecting to\e[0m $DESTINATION and forwarding local \e[1;36m127.0.0.1:$DESTINATION_PORT\e[0m to remote \e[1;33m$OPENED_ADDR:$DESTINATION_PORT\e[0m"
+
+ssh -N -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no -L "127.0.0.1:$DESTINATION_PORT:${OPENED_ADDR}:$DESTINATION_PORT" $DESTINATION
