@@ -2,13 +2,30 @@
 
 There are in this repository all important configurations and shell used on my debian machines.
 
-## root/bin
+## /bin
 
-Contains all root shells such as distribution / service update.
+Contains all useful scripts.
 
-## home/joxit/bin
+### Bash Completion
 
-Contains all user useful shells.
+Update your `~/.bash_completion` file and add
+
+```bash
+_ssh()
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts=$(grep '^Host' ~/.ssh/config ~/.ssh/config.d/* 2>/dev/null | grep -v '[?*]' | cut -d ' ' -f 2-)
+
+    COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+    return 0
+}
+
+# Support completion for domains in /etc/host and ~/.ssh/config
+complete -A hostname -F _ssh port-forward
+```
 
 ### git-change-name
 
@@ -68,6 +85,10 @@ docker-clean containers image1 image2
 # Delete all images from a namespace
 docker-clean repositories namespace
 ```
+
+### port-forward
+
+Forward your local port to remote destination, can support docker containers.
 
 ### sort-file
 

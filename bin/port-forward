@@ -17,6 +17,7 @@
 set -e
 
 if [ -z "$2" ]; then
+  echo "Forward your local port to remote destination, can support docker containers." >&2
   echo "Incorrect param number; $0 [IP|HOSTNAME] [DESTINATION PORT|CONTAINER]" >&2
   exit 1
 fi
@@ -26,7 +27,7 @@ DESTINATION_PORT="$2"
 
 if [ "$DESTINATION_PORT" -eq "$DESTINATION_PORT" ] 2> /dev/null; then
   REMOTE_IPS=$(ssh $DESTINATION ip -json a s | jq -r '.[] | .addr_info | .[] | select(.family == "inet") | .local')
-  OPENED_ADDR=$(ssh $DESTINATION nmap -oG -  -p $DESTINATION_PORT $REMOTE_IPS | grep '/open/' | cut -d' ' -f 2)
+  OPENED_ADDR=$(ssh $DESTINATION nmap -oG - -p $DESTINATION_PORT $REMOTE_IPS | grep '/open/' | cut -d' ' -f 2)
 elif [ -n "$(echo $DESTINATION_PORT | cut -d':' -f 2)" ]; then
   OPENED_ADDR="$(echo $DESTINATION_PORT | cut -d':' -f 1)"
   DESTINATION_PORT="$(echo $DESTINATION_PORT | cut -d':' -f 2)"
