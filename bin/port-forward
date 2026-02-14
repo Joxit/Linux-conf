@@ -35,7 +35,18 @@ fi
 
 if [ -n "$(echo $OPENED_ADDR | grep -o [a-zA-Z])" ]; then
   CONTAINER_NAME="$OPENED_ADDR"
-  OPENED_ADDR="$(ssh $DESTINATION "docker inspect $CONTAINER_NAME" | jq -r '.[] | .NetworkSettings | .Networks |  .[] | .IPAddress | select(length > 0)')"
+  OPENED_ADDR="$(ssh $DESTINATION "docker container inspect $CONTAINER_NAME" 2>/dev/null | jq -r '.[] | .NetworkSettings | .Networks |  .[] | .IPAddress | select(length > 0)')"
+  if [ -z ${OPENED_ADDR} ]; then
+    NEW_CONTAINER_NAME="$(ssh $DESTINATION "docker container ls --filter 'Name = $CONTAINER_NAME' --format '{{ .Names }}'" | head -n 1)"
+    OPENED_ADDR="$(ssh $DESTINATION "docker container inspect $NEW_CONTAINER_NAME" | jq -r '.[] | .NetworkSettings | .Networks |  .[] | .IPAddress | select(length > 0)')"
+    echo -e "\e[3mDid not find container \e[3;33m$CONTAINER_NAME\e[3;0m, I will use \e[3;33m$NEW_CONTAINER_NAME\e[0m\n" >&2
+    CONTAINER_NAME=$NEW_CONTAINER_NAME
+  fi
+
+  if [ -n "$(echo $DESTINATION_PORT | grep -o [a-zA-Z])" ] && [ -n "$OPENED_ADDR" ]; then
+    DESTINATION_PORT="$(ssh $DESTINATION "docker container inspect $CONTAINER_NAME" | jq -r '.[] | .Config | .ExposedPorts | keys | .[] | select(test(. = "/tcp"))' | head -n 1 | cut -d'/' -f 1)"
+    echo -e "\e[3mNo port provided for container \e[3;33m$CONTAINER_NAME\e[3;0m, I will use first exposed port \e[3;33m$DESTINATION_PORT\e[0m\n" >&2
+  fi
 fi
 
 if [ -z "$OPENED_ADDR" ]; then
