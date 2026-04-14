@@ -28,8 +28,10 @@ LOCAL_PORT="$3"
 LOCAL_ADDR="127.0.0.1"
 
 if [ "$DESTINATION_PORT" -eq "$DESTINATION_PORT" ] 2> /dev/null; then
-  REMOTE_IPS=$(ssh $DESTINATION ip -json a s | jq -r '.[] | .addr_info | .[] | select(.family == "inet") | .local')
-  OPENED_ADDR=$(ssh $DESTINATION nmap -oG - -p $DESTINATION_PORT $REMOTE_IPS | grep '/open/' | cut -d' ' -f 2)
+  NMAP_IPS=$(ssh $DESTINATION ip -json a s | jq -r '.[] | .addr_info | .[] | select(.family == "inet") | .local')
+  CNI_IPS=$(ssh $DESTINATION "find /var/run/cni/ -type f -printf '%f\n' | grep '^[0-9.]*$'" || true)
+  REMOTE_IPS="$NMAP_IPS $CNI_IPS"
+  OPENED_ADDR=$(ssh $DESTINATION nmap -oG - -p $DESTINATION_PORT $REMOTE_IPS | grep '/open/' | cut -d' ' -f 2 | head -n 1)
 elif [ -n "$(echo $DESTINATION_PORT | cut -d':' -f 2)" ]; then
   OPENED_ADDR="$(echo $DESTINATION_PORT | cut -d':' -f 1)"
   DESTINATION_PORT="$(echo $DESTINATION_PORT | cut -d':' -f 2)"
@@ -38,6 +40,7 @@ fi
 if [ -n "$(echo $OPENED_ADDR | grep -o [a-zA-Z])" ]; then
   CONTAINER_NAME="$OPENED_ADDR"
   OPENED_ADDR="$(ssh $DESTINATION "docker container inspect $CONTAINER_NAME" 2>/dev/null | jq -r '.[] | .NetworkSettings | .Networks |  .[] | .IPAddress | select(length > 0)')"
+  
   if [ -z ${OPENED_ADDR} ]; then
     NEW_CONTAINER_NAME="$(ssh $DESTINATION "docker container ls --filter 'Name = $CONTAINER_NAME' --format '{{ .Names }}'" | head -n 1)"
     OPENED_ADDR="$(ssh $DESTINATION "docker container inspect $NEW_CONTAINER_NAME" | jq -r '.[] | .NetworkSettings | .Networks |  .[] | .IPAddress | select(length > 0)')"
@@ -48,6 +51,8 @@ if [ -n "$(echo $OPENED_ADDR | grep -o [a-zA-Z])" ]; then
   if [ -n "$(echo $DESTINATION_PORT | grep -o [a-zA-Z])" ] && [ -n "$OPENED_ADDR" ]; then
     DESTINATION_PORT="$(ssh $DESTINATION "docker container inspect $CONTAINER_NAME" | jq -r '.[] | .Config | .ExposedPorts | keys | .[] | select(test(. = "/tcp"))' | head -n 1 | cut -d'/' -f 1)"
     echo -e "\e[3mNo port provided for container \e[3;33m$CONTAINER_NAME\e[3;0m, I will use first exposed port \e[3;33m$DESTINATION_PORT\e[0m\n" >&2
+  else
+    OPENED_ADDR="$DESTINATION_PORT"
   fi
 fi
 
